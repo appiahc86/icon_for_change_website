@@ -1,4 +1,5 @@
 <template>
+ <Navbar />
   <div class="contact-page">
     <!-- Hero Section -->
     <section class="contact-hero py-5">
@@ -163,6 +164,7 @@
       </div>
     </section>
   </div>
+  <Footer />
 </template>
 
 <script setup>
@@ -170,6 +172,8 @@ import { ref } from 'vue';
 import axios from 'axios';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/Navbar.vue";
 
 const toast = useToast();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';

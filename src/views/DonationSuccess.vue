@@ -1,4 +1,5 @@
 <template>
+  <Navbar />
   <div class="donation-success-page">
     <section class="success-section py-5">
       <div class="container">
@@ -129,6 +130,7 @@
       </div>
     </section>
   </div>
+  <Footer />
 </template>
 
 <script setup>
@@ -136,6 +138,8 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import ProgressSpinner from 'primevue/progressspinner';
+import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/Navbar.vue";
 
 const route = useRoute();
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';

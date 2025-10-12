@@ -1,4 +1,5 @@
 <template>
+  <Navbar />
   <div class="home">
     <!-- Hero Section -->
     <section class="hero-section">
@@ -93,7 +94,7 @@
             <div class="focus-card card h-100 border-0 shadow-sm card-hover">
               <div class="card-body p-4 text-center">
                 <div class="focus-icon mb-3">
-                  <i class="pi pi-graduation-cap"></i>
+                  <i class="pi pi-sun"></i>
                 </div>
                 <h4 class="card-title mb-3">Children's Welfare & Education</h4>
                 <p class="card-text text-muted">
@@ -242,10 +243,13 @@
       </div>
     </section>
   </div>
+  <Footer />
 </template>
 
 <script setup>
 // No reactive data or methods needed for this static page
+import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <style scoped>

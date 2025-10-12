@@ -32,6 +32,9 @@
           <li class="nav-item">
             <router-link to="/contact" class="nav-link">Contact</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/gallery" class="nav-link">Gallery</router-link>
+          </li>
           <li class="nav-item ms-lg-3">
             <router-link to="/donate" class="btn btn-primary-custom btn-sm text-white">
               <i class="pi pi-heart me-1"></i> Donate Now

@@ -1,4 +1,5 @@
 <template>
+  <Navbar />
   <div class="about-page">
     <!-- Hero Section -->
     <section class="about-hero py-5">
@@ -234,10 +235,14 @@
       </div>
     </section>
   </div>
+
+  <Footer />
 </template>
 
 <script setup>
 // No reactive data or methods needed for this static page
+import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 </script>
 
 <style scoped>

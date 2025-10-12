@@ -1,4 +1,5 @@
 <template>
+  <Navbar />
   <div class="impact-page">
     <!-- Hero Section -->
     <section class="impact-hero py-5">
@@ -270,10 +271,13 @@
       </div>
     </section>
   </div>
+  <Footer />
 </template>
 
 <script setup>
 // No reactive data or methods needed for this static page
+import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/Navbar.vue";
 </script>
 
 <style scoped>

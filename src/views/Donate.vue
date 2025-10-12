@@ -1,4 +1,5 @@
 <template>
+ <Navbar />
   <div class="donate-page">
     <!-- Hero Section -->
     <section class="donate-hero py-5">
@@ -120,12 +121,22 @@
                     </div>
                     <div class="col-md-6 mb-3">
                       <label class="form-label fw-bold">Country</label>
-                      <InputText
-                          v-model="donationForm.country"
-                          placeholder="Ghana"
-                          class="w-100"
-                          inputClass="form-control"
-                      />
+<!--                      <InputText-->
+<!--                          v-model="donationForm.country"-->
+<!--                          placeholder="Ghana"-->
+<!--                          class="w-100"-->
+<!--                          inputClass="form-control"-->
+<!--                      />-->
+                      <template v-if="loading">
+                        <v-select placeholder="Loading Countries. please wait......"
+                                  class="form-control w-100" disabled="disabled" title="Countries is loading. please be patient...">
+                        </v-select>
+                      </template>
+                      <template v-else>
+                        <v-select :options="countries" label="name" v-model="donationForm.country"
+                                  placeholder="" class="form-control w-100">
+                        </v-select>
+                      </template>
                     </div>
                   </div>
 
@@ -204,12 +215,12 @@
       </div>
     </section>
   </div>
+  <Footer />
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import {ref, computed, reactive, onMounted} from 'vue';
+import apiService from '../config/index.js';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import Textarea from 'primevue/textarea';
@@ -217,17 +228,19 @@ import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/Navbar.vue";
+import 'vue-select/dist/vue-select.css';
 
-const router = useRouter();
+
 const toast = useToast();
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
-const donationForm = ref({
+const donationForm = reactive({
   name: '',
   email: '',
   phone: '',
-  country: 'Ghana',
+  country: null,
   amount: 100,
   currency: 'GHS',
   donationType: 'General',
@@ -235,15 +248,31 @@ const donationForm = ref({
   isAnonymous: false
 });
 
+const loading = ref(false);
 const presetAmounts = [20, 50, 100, 200, 500, 1000];
 const isProcessing = ref(false);
+const countries = ref([]);
 
 const isFormValid = computed(() => {
-  return donationForm.value.name &&
-      donationForm.value.email &&
-      donationForm.value.amount > 0;
+  return donationForm.name &&
+      donationForm.email &&
+      donationForm.amount > 0;
 });
 
+const loadCountries = async () => {
+  try {
+    loading.value = true;
+     const response = await apiService.get('/countries')
+    countries.value = response?.data?.data?.countries || [];
+  }catch (e) {
+    console.log(e.message)
+  }finally {
+    loading.value = false;
+  }
+}
+
+
+//Handle donation
 const handleDonation = async () => {
   if (!isFormValid.value) {
     toast.add({
@@ -258,16 +287,16 @@ const handleDonation = async () => {
   isProcessing.value = true;
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/donations/initialize`, {
-      name: donationForm.value.name,
-      email: donationForm.value.email,
-      phone: donationForm.value.phone,
-      country: donationForm.value.country,
-      amount: donationForm.value.amount,
-      currency: donationForm.value.currency,
-      donationType: donationForm.value.donationType,
-      message: donationForm.value.message,
-      isAnonymous: donationForm.value.isAnonymous
+    const response = await apiService.post(`/donations/initialize`, {
+      name: donationForm.name,
+      email: donationForm.email,
+      phone: donationForm.phone,
+      country: donationForm.country?.id || null,
+      amount: donationForm.amount,
+      currency: donationForm.currency,
+      donationType: donationForm.donationType,
+      message: donationForm.message,
+      isAnonymous: donationForm.isAnonymous
     });
 
     if (response.data.success) {
@@ -286,6 +315,11 @@ const handleDonation = async () => {
     isProcessing.value = false;
   }
 };
+
+
+onMounted(() => {
+  loadCountries();
+})
 </script>
 
 <style scoped>
