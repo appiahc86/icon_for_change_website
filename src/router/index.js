@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import {useAuthStore} from "@/stores/auth.js";
 
 const routes = [
     {
@@ -31,12 +32,7 @@ const routes = [
         component: () => import('../views/Gallery.vue'),
         meta: { title: 'Gallery - Icon of Change LGB Ghana' }
     },
-    {
-        path: '/donate',
-        name: 'Donate',
-        component: () => import('../views/Donate.vue'),
-        meta: { title: 'Donate - Icon of Change LGB Ghana' }
-    },
+
     {
         path: '/contact',
         name: 'Contact',
@@ -44,18 +40,29 @@ const routes = [
         meta: { title: 'Contact Us - Icon of Change LGB Ghana' }
     },
     {
+        path: '/donate',
+        name: 'Donate',
+        component: () => import('../views/Donate.vue'),
+        meta: { title: 'Donate - Icon of Change LGB Ghana' }
+    },
+
+    {
         path: '/donation-success',
         name: 'DonationSuccess',
         component: () => import('../views/DonationSuccess.vue'),
         meta: { title: 'Thank You - Icon of Change LGB Ghana' }
     },
-    // Admin Routes
+
+
+
+            //Admin Routes
     {
         path: '/admin/login',
         name: 'AdminLogin',
         component: () => import('../views/admin/Login.vue'),
-        meta: { title: 'Admin Login - Icon of Change LGB Ghana', layout: 'blank' }
+        meta: { title: 'Admin Login - Icon of Change LGB Ghana', layout: 'blank', requiresGuest: true }
     },
+
     {
         path: '/admin/dashboard',
         name: 'AdminDashboard',
@@ -104,6 +111,14 @@ const routes = [
     {
         path: '/admin',
         redirect: '/admin/dashboard'
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('@/views/NotFound.vue'),
+        meta: {
+            title: 'Page Not Found - Icon of Change LGB Ghana'
+        }
     }
 ];
 
@@ -118,20 +133,35 @@ const router = createRouter({
     }
 });
 
-router.beforeEach((to, from, next) => {
-    document.title = to.meta.title || 'Icon of Change LGB Ghana';
 
-    // Check authentication for admin routes
-    if (to.meta.requiresAuth) {
-        const token = localStorage.getItem('admin_token');
-        if (!token) {
-            next('/admin/login');
-        } else {
-            next();
-        }
-    } else {
-        next();
+// Navigation guards
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore()
+
+    // Set page title
+    if (to.meta.title) {
+        document.title = to.meta.title
     }
-});
+
+    // Check authentication requirements
+    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+        // Redirect to login if auth required but not authenticated
+        next({
+            name: 'AdminLogin',
+            query: { redirect: to.fullPath }
+        })
+        return
+    }
+
+    // Check guest requirements (redirect authenticated users away from auth pages)
+    if (to.meta.requiresGuest && authStore.isAuthenticated) {
+        next({ name: 'AdminDashboard' })
+        return
+    }
+
+    next()
+})
+
+
 
 export default router;

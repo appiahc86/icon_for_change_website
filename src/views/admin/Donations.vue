@@ -601,10 +601,6 @@ const closeMobileSidebar = () => {
 };
 
 onMounted(() => {
-  if (!localStorage.getItem('admin_token')) {
-    router.push('/admin/login');
-    return;
-  }
   fetchDonations();
 });
 </script>

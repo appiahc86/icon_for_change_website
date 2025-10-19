@@ -47,11 +47,11 @@
             </li>
             <li>
               <i class="pi pi-phone me-2"></i>
-              +233 XX XXX XXXX
+              +233 20 120 8960
             </li>
             <li>
               <i class="pi pi-envelope me-2"></i>
-              info@iconofchange.org
+              info@iconghana.org
             </li>
           </ul>
         </div>

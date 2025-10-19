@@ -220,7 +220,6 @@
 
 <script setup>
 import {ref, computed, reactive, onMounted} from 'vue';
-import apiService from '../config/index.js';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import Textarea from 'primevue/textarea';
@@ -231,9 +230,11 @@ import { useToast } from 'primevue/usetoast';
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
 import 'vue-select/dist/vue-select.css';
+import {useHomeStore} from "@/stores/home.js";
 
 
 const toast = useToast();
+const homeStore = useHomeStore();
 
 
 const donationForm = reactive({
@@ -262,8 +263,9 @@ const isFormValid = computed(() => {
 const loadCountries = async () => {
   try {
     loading.value = true;
-     const response = await apiService.get('/countries')
-    countries.value = response?.data?.data?.countries || [];
+     const response = await homeStore.getCountries();
+    countries.value = response?.data?.countries || [];
+
   }catch (e) {
     console.log(e.message)
   }finally {
@@ -286,22 +288,24 @@ const handleDonation = async () => {
 
   isProcessing.value = true;
 
-  try {
-    const response = await apiService.post(`/donations/initialize`, {
-      name: donationForm.name,
-      email: donationForm.email,
-      phone: donationForm.phone,
-      country: donationForm.country?.id || null,
-      amount: donationForm.amount,
-      currency: donationForm.currency,
-      donationType: donationForm.donationType,
-      message: donationForm.message,
-      isAnonymous: donationForm.isAnonymous
-    });
+  const payload = {
+    name: donationForm.name,
+    email: donationForm.email,
+    phone: donationForm.phone,
+    country: donationForm.country?.id || null,
+    amount: donationForm.amount,
+    currency: donationForm.currency,
+    donationType: donationForm.donationType,
+    message: donationForm.message,
+    isAnonymous: donationForm.isAnonymous
+  }
 
-    if (response.data.success) {
+  try {
+    const response = await homeStore.initializeDonation(payload)
+
+    if (response.success) {
       // Redirect to Paystack payment page
-      window.location.href = response.data.data.authorization_url;
+      window.location.href = response.data.authorization_url;
     }
   } catch (error) {
     console.error('Donation error:', error);

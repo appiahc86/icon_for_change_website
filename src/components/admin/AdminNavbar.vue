@@ -13,32 +13,32 @@
         </button>
       </div>
 
-      <div class="nav-item">
-        <button class="btn-icon position-relative" @click="showNotifications = !showNotifications">
-          <i class="pi pi-bell"></i>
-          <span v-if="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
-        </button>
+<!--      <div class="nav-item">-->
+<!--        <button class="btn-icon position-relative" @click="showNotifications = !showNotifications">-->
+<!--          <i class="pi pi-bell"></i>-->
+<!--          <span v-if="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>-->
+<!--        </button>-->
 
-        <!-- Notifications Dropdown -->
-        <div v-if="showNotifications" class="dropdown-menu notifications-dropdown">
-          <div class="dropdown-header">
-            <h6>Notifications</h6>
-            <button class="btn-sm" @click="markAllRead">Mark all read</button>
-          </div>
-          <div class="notifications-list">
-            <div v-for="notification in notifications" :key="notification.id" class="notification-item">
-              <i :class="notification.icon" :style="{ color: notification.color }"></i>
-              <div class="notification-content">
-                <p class="mb-1">{{ notification.message }}</p>
-                <small class="text-muted">{{ notification.time }}</small>
-              </div>
-            </div>
-          </div>
-          <div class="dropdown-footer">
-            <a href="#" class="text-center d-block">View all notifications</a>
-          </div>
-        </div>
-      </div>
+<!--        &lt;!&ndash; Notifications Dropdown &ndash;&gt;-->
+<!--        <div v-if="showNotifications" class="dropdown-menu notifications-dropdown">-->
+<!--          <div class="dropdown-header">-->
+<!--            <h6>Notifications</h6>-->
+<!--            <button class="btn-sm" @click="markAllRead">Mark all read</button>-->
+<!--          </div>-->
+<!--          <div class="notifications-list">-->
+<!--            <div v-for="notification in notifications" :key="notification.id" class="notification-item">-->
+<!--              <i :class="notification.icon" :style="{ color: notification.color }"></i>-->
+<!--              <div class="notification-content">-->
+<!--                <p class="mb-1">{{ notification.message }}</p>-->
+<!--                <small class="text-muted">{{ notification.time }}</small>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="dropdown-footer">-->
+<!--            <a href="#" class="text-center d-block">View all notifications</a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
 
 <!--      <div class="nav-item">-->
 <!--        <div class="user-menu" @click="showUserMenu = !showUserMenu">-->

@@ -12,18 +12,22 @@
 
         <form @submit.prevent="handleLogin">
           <div class="mb-3">
-            <label class="form-label fw-bold">Username</label>
+            <label class="form-label fw-bold">Email</label>
             <div class="input-group">
               <span class="input-group-text">
                 <i class="pi pi-user"></i>
               </span>
               <input
-                  type="text"
-                  v-model="loginForm.username"
-                  class="form-control"
-                  placeholder="Enter username"
-                  required
+                  type="email"
+                  v-model="loginForm.email"
+                  :class="['form-control', { 'is-invalid': errors.email }]"
+                  placeholder="Enter email"
+                  @blur="validateEmail"
+                  @input="errors.email = ''"
               />
+            </div>
+            <div v-if="errors.email" class="invalid-feedback d-block">
+              {{ errors.email }}
             </div>
           </div>
 
@@ -36,9 +40,10 @@
               <input
                   :type="showPassword ? 'text' : 'password'"
                   v-model="loginForm.password"
-                  class="form-control"
+                  :class="['form-control', { 'is-invalid': errors.password }]"
                   placeholder="Enter password"
-                  required
+                  @blur="validatePassword"
+                  @input="errors.password = ''"
               />
               <button
                   class="btn btn-outline-secondary"
@@ -48,14 +53,17 @@
                 <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
               </button>
             </div>
+            <div v-if="errors.password" class="invalid-feedback d-block">
+              {{ errors.password }}
+            </div>
           </div>
 
           <button
               type="submit"
-              class="btn btn-primary-custom w-100 mb-3"
-              :disabled="isLoading"
+              class="btn btn-dark w-100 mb-3"
+              :disabled="authStore.isLoading"
           >
-            <span v-if="isLoading">
+            <span v-if="authStore.isLoading">
               <i class="pi pi-spin pi-spinner me-2"></i>Logging in...
             </span>
             <span v-else>
@@ -75,52 +83,109 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import {reactive, ref} from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import {useAuthStore} from "@/stores/auth.js";
 
+const authStore = useAuthStore();
 const router = useRouter();
+const route = useRoute();
 const toast = useToast();
 
-const loginForm = ref({
-  username: '',
+const loginForm = reactive({
+  email: '',
+  password: ''
+});
+
+const errors = reactive({
+  email: '',
   password: ''
 });
 
 const showPassword = ref(false);
 const isLoading = ref(false);
 
+// Email validation function
+const validateEmail = () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!loginForm.email) {
+    errors.email = 'Email is required';
+    return false;
+  } else if (!emailRegex.test(loginForm.email)) {
+    errors.email = 'Please enter a valid email address';
+    return false;
+  } else {
+    errors.email = '';
+    return true;
+  }
+};
+
+// Password validation function
+const validatePassword = () => {
+  if (!loginForm.password) {
+    errors.password = 'Password is required';
+    return false;
+  } else if (loginForm.password.length < 6) {
+    errors.password = 'Password must be at least 6 characters';
+    return false;
+  } else {
+    errors.password = '';
+    return true;
+  }
+};
+
+// Validate all fields
+const validateForm = () => {
+  const isEmailValid = validateEmail();
+  const isPasswordValid = validatePassword();
+
+  return isEmailValid && isPasswordValid;
+};
+
 const handleLogin = async () => {
-  isLoading.value = true;
+  // Validate form before submission
+  if (!validateForm()) {
+    toast.add({
+      severity: 'error',
+      summary: 'Validation Error',
+      detail: 'Please fix the errors in the form',
+      life: 3000
+    });
+    return;
+  }
 
-  // Simple authentication (in production, use proper backend authentication)
-  setTimeout(() => {
-    if (loginForm.value.username === 'admin' && loginForm.value.password === 'admin123') {
-      // Store auth token
-      localStorage.setItem('admin_token', 'authenticated');
-      localStorage.setItem('admin_user', loginForm.value.username);
+  try {
+    const response = await authStore.login(loginForm.email, loginForm.password);
 
-      toast.add({
-        severity: 'success',
-        summary: 'Login Successful',
-        detail: 'Welcome to the admin dashboard',
-        life: 3000
-      });
+   if (response.success) {
+     // Redirect to intended page or dashboard
+     const redirectPath = route.query.redirect || '/admin/dashboard'
+     authStore.initializeAuth();
+     router.push(redirectPath)
 
-      setTimeout(() => {
-        router.push('/admin/dashboard');
-      }, 1000);
-    } else {
-      toast.add({
-        severity: 'error',
-        summary: 'Login Failed',
-        detail: 'Invalid username or password',
-        life: 3000
-      });
-    }
-    isLoading.value = false;
-  }, 1000);
+   } else {
+     // Handle login failure
+     toast.add({
+       severity: 'error',
+       summary: 'Login Failed',
+       detail: response.message || 'Invalid email or password',
+       life: 4000
+     });
+   }
+
+  } catch (e) {
+    console.error('Login error:', e);
+    toast.add({
+      severity: 'error',
+      summary: 'Login Error',
+      detail: e?.response?.data?.message || 'An error occurred during login. Please try again.',
+      life: 4000
+    });
+
+  }
 };
 </script>
 
@@ -168,5 +233,23 @@ const handleLogin = async () => {
 
 .input-group:focus-within .input-group-text {
   border-color: var(--primary-color);
+}
+
+.form-control.is-invalid {
+  border-left: 1px solid #dc3545;
+}
+
+.form-control.is-invalid ~ .btn {
+  border-color: #dc3545;
+}
+
+.input-group:has(.form-control.is-invalid) .input-group-text {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 </style>

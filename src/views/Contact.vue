@@ -72,7 +72,7 @@
 
                   <button
                       type="submit"
-                      class="btn btn-primary-custom w-100"
+                      class="btn btn-primary-custom text-white w-100"
                       :disabled="isSubmitting"
                   >
                     <i class="pi pi-send me-2"></i>
@@ -104,7 +104,7 @@
                 </div>
                 <div class="info-content">
                   <h5>Phone Number</h5>
-                  <p class="text-muted mb-0">+233 XX XXX XXXX</p>
+                  <p class="text-muted mb-0">+233 20 120 8960</p>
                 </div>
               </div>
 
@@ -114,7 +114,7 @@
                 </div>
                 <div class="info-content">
                   <h5>Email Address</h5>
-                  <p class="text-muted mb-0">info@iconofchange.org</p>
+                  <p class="text-muted mb-0">info@iconghana.org</p>
                 </div>
               </div>
 
@@ -145,24 +145,23 @@
     </section>
 
     <!-- Map Section -->
-    <section class="map-section py-5 bg-light">
-      <div class="container">
-        <div class="text-center mb-4">
-          <h3>Visit Our Office</h3>
-          <p class="text-muted">We welcome visitors by appointment</p>
-        </div>
-        <div class="map-container">
-          <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126179.01057371163!2d-1.6780769!3d6.6884727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdb96f342e5cd63%3A0x2ef00bc628e84c8a!2sKumasi%2C%20Ghana!5e0!3m2!1sen!2sus!4v1234567890123"
-              width="100%"
-              height="400"
-              style="border:0; border-radius: 10px;"
-              allowfullscreen=""
-              loading="lazy">
-          </iframe>
-        </div>
-      </div>
-    </section>
+<!--    <section class="map-section py-5 bg-light">-->
+<!--      <div class="container">-->
+<!--        <div class="text-center mb-4">-->
+<!--          <h3>Visit Our Office</h3>-->
+<!--        </div>-->
+<!--        <div class="map-container">-->
+<!--          <iframe-->
+<!--              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126179.01057371163!2d-1.6780769!3d6.6884727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdb96f342e5cd63%3A0x2ef00bc628e84c8a!2sKumasi%2C%20Ghana!5e0!3m2!1sen!2sus!4v1234567890123"-->
+<!--              width="100%"-->
+<!--              height="400"-->
+<!--              style="border:0; border-radius: 10px;"-->
+<!--              allowfullscreen=""-->
+<!--              loading="lazy">-->
+<!--          </iframe>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
   </div>
   <Footer />
 </template>

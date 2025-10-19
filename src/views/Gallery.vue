@@ -2,12 +2,28 @@
   <Navbar />
   <div class="gallery-page">
     <!-- Hero Section -->
-    <section class="gallery-hero py-5">
-      <div class="container">
-        <div class="row justify-content-center text-center">
-          <div class="col-lg-8">
-            <h1 class="display-4 fw-bold text-white mb-3">Our Gallery</h1>
-            <p class="lead text-white">Moments of hope, care, and transformation in our community</p>
+    <section class="gallery-hero">
+      <div class="hero-overlay">
+        <div class="hero-shapes"></div>
+        <div class="container">
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-9">
+              <div class="breadcrumb-nav mb-4 fade-in-up">
+                <router-link to="/" class="text-white-50">Home</router-link>
+                <span class="text-white-50 mx-2">/</span>
+                <span class="text-white">Gallery</span>
+              </div>
+              <h1 class="display-3 fw-bold text-white mb-4 fade-in-up" style="animation-delay: 0.1s">
+                Our Gallery
+              </h1>
+              <p class="lead text-white mb-4 fade-in-up" style="animation-delay: 0.2s">
+                Moments of hope, care, and transformation in our community
+              </p>
+              <div class="hero-tags fade-in-up" style="animation-delay: 0.3s">
+                <span class="tag"><i class="pi pi-images me-2"></i>{{ galleryImages.length }} Photos</span>
+                <span class="tag"><i class="pi pi-camera me-2"></i>Latest Updates</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -45,13 +61,13 @@
           >
             <i class="pi pi-globe me-2"></i>Community Events
           </button>
-          <button
-              class="btn filter-btn"
-              :class="{ active: activeFilter === 'volunteers' }"
-              @click="activeFilter = 'volunteers'"
-          >
-            <i class="pi pi-users me-2"></i>Volunteers
-          </button>
+<!--          <button-->
+<!--              class="btn filter-btn"-->
+<!--              :class="{ active: activeFilter === 'volunteers' }"-->
+<!--              @click="activeFilter = 'volunteers'"-->
+<!--          >-->
+<!--            <i class="pi pi-users me-2"></i>Volunteers-->
+<!--          </button>-->
         </div>
       </div>
     </section>
@@ -135,11 +151,11 @@
         </div>
 
         <!-- Load More -->
-        <div v-if="filteredImages.length > 0 && hasMore" class="text-center mt-5">
-          <button class="btn btn-primary-custom btn-lg" @click="loadMore">
-            <i class="pi pi-plus-circle me-2"></i>Load More Photos
-          </button>
-        </div>
+<!--        <div v-if="filteredImages.length > 0 && hasMore" class="text-center mt-5">-->
+<!--          <button class="btn btn-primary-custom text-white btn-lg" @click="loadMore">-->
+<!--            <i class="pi pi-plus-circle me-2"></i>Load More Photos-->
+<!--          </button>-->
+<!--        </div>-->
       </div>
     </section>
 
@@ -226,7 +242,7 @@
           Join us in creating more moments of hope and transformation
         </p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
-          <router-link to="/donate" class="btn btn-primary-custom btn-lg">
+          <router-link to="/donate" class="btn btn-primary-custom text-white btn-lg">
             <i class="pi pi-heart me-2"></i>Donate Now
           </router-link>
           <router-link to="/contact" class="btn btn-secondary-custom btn-lg">
@@ -254,27 +270,27 @@ const hasMore = ref(true);
 const galleryImages = ref([
   {
     id: 1,
-    src: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800',
-    title: 'School Supplies Distribution',
-    description: 'Providing essential learning materials to children in Assin Central',
+    src: '/images/gallery/children/1.jpeg',
+    title: 'Bright Futures',
+    description: 'Empowering children through access to quality education, mentorship, and learning resources.',
     category: 'Children\'s Education',
     date: 'March 2024',
-    location: 'Assin Central',
+    location: 'Fumesua',
     categorySlug: 'children'
   },
   {
     id: 2,
-    src: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800',
-    title: 'Reading Time',
-    description: 'Children enjoying books from our mobile library program',
-    category: 'Children\'s Education',
+    src: '/images/gallery/community/1.jpeg',
+    title: 'Together We Thrive',
+    description: 'Hosting inclusive events that strengthen community ties and celebrate local culture.',
+    category: 'Community Events',
     date: 'February 2024',
     location: 'Ejisu Municipal',
-    categorySlug: 'children'
+    categorySlug: 'community'
   },
   {
     id: 3,
-    src: 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=800',
+    src: '/images/gallery/elderly/1.jpeg',
     title: 'Elderly Health Screening',
     description: 'Free medical check-ups for senior citizens',
     category: 'Elderly Care',
@@ -282,41 +298,43 @@ const galleryImages = ref([
     location: 'Assin North',
     categorySlug: 'elderly'
   },
+    //break
   {
     id: 4,
-    src: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800',
-    title: 'Community Gathering',
-    description: 'Bringing generations together through shared activities',
-    category: 'Community Events',
+    src: '/images/gallery/children/2.jpeg',
+    title: 'Books & Beyond',
+    description: 'Supporting literacy and creativity with book drives, tutoring, and after-school programs.',
+    category: 'Children\'s Education',
     date: 'January 2024',
-    location: 'Kumasi',
-    categorySlug: 'community'
+    location: 'Fumesua',
+    categorySlug: 'children'
   },
   {
     id: 5,
-    src: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800',
+    src: '/images/gallery/community/2.jpeg',
     title: 'Mentorship Program',
     description: 'Volunteers guiding the next generation',
-    category: 'Volunteers',
+    category: 'Community Events',
     date: 'February 2024',
     location: 'Assin Central',
-    categorySlug: 'volunteers'
+    categorySlug: 'community'
   },
   {
     id: 6,
-    src: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800',
-    title: 'Feeding Program',
-    description: 'Nutritious meals for elderly community members',
+    src: '/images/gallery/elderly/2.jpeg',
+    title: 'Wisdom & Wellness',
+    description: 'Promoting active aging through wellness programs, storytelling, and social engagement.',
     category: 'Elderly Care',
     date: 'March 2024',
     location: 'Ejisu Municipal',
     categorySlug: 'elderly'
   },
+    //break
   {
     id: 7,
-    src: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800',
-    title: 'Sports Day',
-    description: 'Promoting health and teamwork among children',
+    src: '/images/gallery/children/3.jpeg',
+    title: 'Classroom to Community',
+    description: 'Bridging the gap between school and life skills to help children thrive in every environment.',
     category: 'Children\'s Education',
     date: 'January 2024',
     location: 'Assin North',
@@ -324,25 +342,60 @@ const galleryImages = ref([
   },
   {
     id: 8,
-    src: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800',
-    title: 'Intergenerational Program',
-    description: 'Children and elderly sharing stories and wisdom',
+    src: '/images/gallery/community/3.jpeg',
+    title: 'Unity in Action',
+    description: 'Mobilizing volunteers and residents for cleanups, drives, and neighborhood improvements.',
+    category: 'Community Events',
+    date: 'February 2024',
+    location: 'Ejisu Municipal',
+    categorySlug: 'community'
+  },
+  {
+    id: 9,
+    src: '/images/gallery/elderly/3.jpeg',
+    title: 'Golden Years',
+    description: 'Providing companionship, healthcare support, and dignity for our senior citizens.',
+    category: 'Elderly Care',
+    date: 'March 2024',
+    location: 'Assin Central',
+    categorySlug: 'elderly'
+  },
+  //Break
+  {
+    id: 10,
+    src: '/images/gallery/children/4.jpeg',
+    title: 'Seeds of Success',
+    description: 'Nurturing young minds with early childhood programs that build confidence, curiosity, and lifelong learning habits.',
+    category: 'Children\'s Education',
+    date: 'January 2024',
+    location: 'Assin North',
+    categorySlug: 'children'
+  },
+  {
+    id: 11,
+    src: '/images/gallery/community/4.jpeg',
+    title: 'Voices of the Village',
+    description: 'Giving a platform to community members through forums, performances, and storytelling.',
     category: 'Community Events',
     date: 'February 2024',
     location: 'Kumasi',
     categorySlug: 'community'
   },
   {
-    id: 9,
-    src: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800',
-    title: 'Volunteer Training',
-    description: 'Equipping volunteers with caregiving skills',
-    category: 'Volunteers',
+    id: 12,
+    src: '/images/gallery/elderly/4.jpeg',
+    title: 'Senior Smiles',
+    description: 'Creating joyful moments through community visits, celebrations, and intergenerational bonding.',
+    category: 'Elderly Care',
     date: 'March 2024',
     location: 'Assin Central',
-    categorySlug: 'volunteers'
+    categorySlug: 'elderly'
   }
+
 ]);
+
+
+
 
 const filteredImages = computed(() => {
   if (activeFilter.value === 'all') {
@@ -377,7 +430,7 @@ const getCategoryClass = (category) => {
     'Children\'s Education': 'bg-primary',
     'Elderly Care': 'bg-success',
     'Community Events': 'bg-info',
-    'Volunteers': 'bg-warning text-dark'
+    // 'Volunteers': 'bg-warning text-dark'
   };
   return classes[category] || 'bg-secondary';
 };
@@ -403,216 +456,47 @@ if (typeof window !== 'undefined') {
 </script>
 
 <style scoped>
+/* Hero Section */
 .gallery-hero {
-  background: linear-gradient(135deg, var(--primary-color), #1a365d);
-  min-height: 300px;
+  background: linear-gradient(135deg, rgba(0, 40, 85, 0.95), rgba(26, 54, 93, 0.95)),
+    url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600') center/cover;
+  min-height: 450px;
   display: flex;
   align-items: center;
-}
-
-.gallery-filters {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  z-index: 100;
-}
-
-.filter-btn {
-  background: white;
-  border: 2px solid #e2e8f0;
-  color: #4a5568;
-  padding: 0.5rem 1.5rem;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-}
-
-.filter-btn:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-  transform: translateY(-2px);
-}
-
-.filter-btn.active {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: white;
-}
-
-.gallery-stat {
-  padding: 1rem;
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
-}
-
-.stat-label {
-  color: #718096;
-  font-weight: 500;
-  margin: 0;
-}
-
-.gallery-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.gallery-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-}
-
-.image-wrapper {
   position: relative;
   overflow: hidden;
-  height: 300px;
+  padding: 100px 0 80px;
 }
 
-.gallery-image {
+.hero-overlay {
+  position: relative;
+  z-index: 2;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
 }
 
-.gallery-card:hover .gallery-image {
-  transform: scale(1.1);
-}
-
-.image-overlay {
+.hero-shapes {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.9) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
-  align-items: flex-end;
-  padding: 1.5rem;
-}
-
-.gallery-card:hover .image-overlay {
-  opacity: 1;
-}
-
-.overlay-content {
   width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
 }
 
-.gallery-card-footer {
-  padding: 1rem;
-  background: white;
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
-/* Lightbox Styles */
-.lightbox-dialog :deep(.p-dialog-content) {
-  padding: 0;
-  background: #000;
+.breadcrumb-nav a {
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.lightbox-content {
-  position: relative;
-  background: #000;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.lightbox-close:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.lightbox-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.lightbox-nav:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.lightbox-prev {
-  left: 1rem;
-}
-
-.lightbox-next {
-  right: 1rem;
-}
-
-.lightbox-image-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  max-height: 70vh;
-}
-
-.lightbox-image {
-  max-width: 100%;
-  max-height: 70vh;
-  object-fit: contain;
-}
-
-.lightbox-info {
-  background: white;
-  padding: 1.5rem;
-}
-
-.lightbox-counter {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-/* Animation */
-.fade-in-0 {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.fade-in-1 {
-  animation: fadeInUp 0.6s ease-out 0.1s backwards;
-}
-
-.fade-in-2 {
-  animation: fadeInUp 0.6s ease-out 0.2s backwards;
+.breadcrumb-nav a:hover {
+  color: var(--accent-color) !important;
 }
 
 @keyframes fadeInUp {
@@ -626,14 +510,419 @@ if (typeof window !== 'undefined') {
   }
 }
 
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.hero-tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-tags .tag {
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: white;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.hero-tags .tag:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+}
+
+/* Gallery Filters */
+.gallery-filters {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.filter-btn {
+  background: white;
+  border: 2px solid #e2e8f0;
+  color: #4a5568;
+  padding: 0.6rem 1.5rem;
+  border-radius: 25px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-color: var(--primary-color);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(44, 82, 130, 0.3);
+}
+
+/* Gallery Stats */
+.gallery-stat {
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+.gallery-stat:hover {
+  background: rgba(44, 82, 130, 0.05);
+  transform: scale(1.05);
+}
+
+.stat-number {
+  font-size: 2.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #718096;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Gallery Cards */
+.gallery-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.gallery-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s ease;
+  z-index: 1;
+}
+
+.gallery-card:hover::before {
+  transform: scaleX(1);
+}
+
+.gallery-card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+}
+
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  background: #f7fafc;
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  will-change: transform;
+}
+
+.gallery-card:hover .gallery-image {
+  transform: scale(1.15) rotate(2deg);
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.95) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+}
+
+.gallery-card:hover .image-overlay {
+  opacity: 1;
+}
+
+.overlay-content {
+  width: 100%;
+  transform: translateY(20px);
+  transition: transform 0.4s ease;
+}
+
+.gallery-card:hover .overlay-content {
+  transform: translateY(0);
+}
+
+.overlay-content .btn {
+  transition: all 0.3s ease;
+}
+
+.overlay-content .btn:hover {
+  transform: scale(1.1);
+}
+
+.gallery-card-footer {
+  padding: 1rem 1.25rem;
+  background: white;
+  flex-shrink: 0;
+}
+
+.gallery-card-footer .badge {
+  padding: 0.4rem 0.8rem;
+  font-weight: 600;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+/* Lightbox Styles */
+.lightbox-dialog :deep(.p-dialog-content) {
+  padding: 0;
+  background: #000;
+  border-radius: 15px;
+}
+
+.lightbox-dialog :deep(.p-dialog-mask) {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.lightbox-content {
+  position: relative;
+  background: #000;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev {
+  left: 1.5rem;
+}
+
+.lightbox-next {
+  right: 1.5rem;
+}
+
+.lightbox-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  max-height: 70vh;
+  padding: 2rem;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  animation: zoomIn 0.4s ease-out;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lightbox-info {
+  background: white;
+  padding: 2rem;
+}
+
+.lightbox-info .btn {
+  transition: all 0.3s ease;
+}
+
+.lightbox-info .btn:hover {
+  transform: translateY(-2px);
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Gallery Item Animations */
+.fade-in-0 {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.fade-in-1 {
+  animation: fadeInUp 0.6s ease-out 0.1s backwards;
+}
+
+.fade-in-2 {
+  animation: fadeInUp 0.6s ease-out 0.2s backwards;
+}
+
+/* CTA Section */
+.gallery-cta {
+  position: relative;
+  background: linear-gradient(135deg, rgba(247, 250, 252, 0.8), rgba(237, 242, 247, 0.8));
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+  .gallery-hero {
+    min-height: 350px;
+    padding: 80px 0 60px;
+  }
+
   .image-wrapper {
     height: 250px;
   }
 
   .lightbox-nav {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+
+  .lightbox-close {
     width: 40px;
     height: 40px;
+    font-size: 1.1rem;
   }
+
+  .lightbox-prev {
+    left: 1rem;
+  }
+
+  .lightbox-next {
+    right: 1rem;
+  }
+
+  .lightbox-image-wrapper {
+    padding: 1rem;
+  }
+
+  .lightbox-info {
+    padding: 1.5rem;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+  }
+
+  .hero-tags {
+    justify-content: center;
+  }
+
+  .hero-tags .tag {
+    font-size: 0.8rem;
+    padding: 6px 15px;
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* GPU Acceleration */
+.gallery-card,
+.gallery-image,
+.filter-btn,
+.lightbox-image {
+  will-change: transform;
+  transform: translateZ(0);
 }
 </style>

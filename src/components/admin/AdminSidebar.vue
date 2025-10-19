@@ -48,14 +48,14 @@
 
       <div class="nav-divider" v-if="!props.isCollapsed"></div>
 
-      <router-link
-          to="/admin/settings"
-          class="nav-item"
-          :class="{ 'active': activeMenu === 'settings' }"
-      >
-        <i class="pi pi-cog"></i>
-        <span v-if="!props.isCollapsed">Settings</span>
-      </router-link>
+<!--      <router-link-->
+<!--          to="/admin/settings"-->
+<!--          class="nav-item"-->
+<!--          :class="{ 'active': activeMenu === 'settings' }"-->
+<!--      >-->
+<!--        <i class="pi pi-cog"></i>-->
+<!--        <span v-if="!props.isCollapsed">Settings</span>-->
+<!--      </router-link>-->
 
       <a href="/" target="_blank" class="nav-item">
         <i class="pi pi-external-link"></i>
@@ -75,6 +75,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import {useAuthStore} from "@/stores/auth.js";
+const authStore = useAuthStore();
 
 const props = defineProps({
   activeMenu: {
@@ -96,8 +98,7 @@ const donationCount = ref(12);
 const unreadCount = ref(5);
 
 const handleLogout = () => {
-  localStorage.removeItem('admin_token');
-  localStorage.removeItem('admin_user');
+  authStore.clearAuth();
   router.push('/admin/login');
 };
 </script>

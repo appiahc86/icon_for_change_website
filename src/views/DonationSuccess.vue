@@ -47,7 +47,7 @@
                   </p>
 
                   <div class="button-group">
-                    <router-link to="/" class="btn btn-primary-custom btn-lg me-2 mb-2">
+                    <router-link to="/" class="btn btn-primary-custom btn-lg me-2 mb-2 text-white">
                       <i class="pi pi-home me-2"></i>Back to Home
                     </router-link>
                     <button @click="shareOnSocial" class="btn btn-secondary-custom btn-lg mb-2">
@@ -136,13 +136,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios';
 import ProgressSpinner from 'primevue/progressspinner';
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
+import {useHomeStore} from "@/stores/home.js";
 
 const route = useRoute();
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const homeStore = useHomeStore();
 
 const isVerifying = ref(true);
 const paymentVerified = ref(false);
@@ -164,15 +164,15 @@ const verifyPayment = async () => {
   }
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/donations/verify/${reference}`);
+    const response = await homeStore.verifyDonation(reference);
 
-    if (response.data.success) {
+    if (response.success) {
       paymentVerified.value = true;
-      paymentStatus.value = response.data.data.status;
+      paymentStatus.value = response.data.status;
       donationDetails.value = {
-        amount: response.data.data.amount,
-        currency: response.data.data.currency,
-        reference: response.data.data.reference
+        amount: response.data.amount,
+        currency: response.data.currency,
+        reference: response.data.reference
       };
     } else {
       verificationError.value = true;
@@ -185,13 +185,38 @@ const verifyPayment = async () => {
   }
 };
 
-const shareOnSocial = () => {
+const shareOnSocial = async () => {
+  // Check if Web Share API is available
   if (navigator.share) {
-    navigator.share({
-      title: 'I just donated to Icon of Change LGB Ghana',
-      text: 'Join me in supporting children and elderly persons in Ghana!',
-      url: window.location.origin
-    });
+    try {
+      await navigator.share({
+        title: 'I just donated to Icon of Change LGB Ghana',
+        text: 'Join me in supporting children and elderly persons in Ghana!',
+        url: window.location.origin
+      });
+    } catch (error) {
+      // User cancelled the share dialog
+      if (error.name === 'AbortError') {
+        return; // Silently handle cancellation
+      }
+      // Other errors - fallback to clipboard
+      console.error('Error sharing:', error);
+      copyLinkToClipboard();
+    }
+  } else {
+    // Web Share API not supported - fallback to clipboard
+    copyLinkToClipboard();
+  }
+};
+
+const copyLinkToClipboard = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.origin);
+    alert('Link copied to clipboard! Share it with your friends.');
+  } catch (error) {
+    console.error('Failed to copy link:', error);
+    // Final fallback - show a prompt with the link
+    prompt('Copy this link to share:', window.location.origin);
   }
 };
 

@@ -25,44 +25,72 @@
           <div class="row g-4 mb-4">
             <div class="col-xl-4 col-md-6">
               <div class="stat-card">
-                <div class="stat-icon bg-success">
-                  <i class="pi pi-dollar"></i>
+                <div v-if="loading" class="skeleton-loader">
+                  <div class="skeleton-icon"></div>
+                  <div class="skeleton-content">
+                    <div class="skeleton-text skeleton-label"></div>
+                    <div class="skeleton-text skeleton-value"></div>
+                    <div class="skeleton-text skeleton-small"></div>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <p class="stat-label">Annual Donations</p>
-                  <h3 class="stat-value">GHS {{ stats.annualDonations.toLocaleString() }}</h3>
-                  <small class="text-success">
-                    <i class="pi pi-arrow-up me-1"></i>Total donations
-                  </small>
-                </div>
+                <template v-else>
+                  <div class="stat-icon bg-success">
+                    <i class="pi pi-dollar"></i>
+                  </div>
+                  <div class="stat-content">
+                    <p class="stat-label">Annual Donations</p>
+                    <h3 class="stat-value">GHS {{ stats.annualDonations.toLocaleString() }}</h3>
+                    <small class="text-success">
+                      <i class="pi pi-arrow-up me-1"></i>Total donations
+                    </small>
+                  </div>
+                </template>
               </div>
             </div>
 
             <div class="col-xl-4 col-md-6">
               <div class="stat-card">
-                <div class="stat-icon bg-primary">
-                  <i class="pi pi-users"></i>
+                <div v-if="loading" class="skeleton-loader">
+                  <div class="skeleton-icon"></div>
+                  <div class="skeleton-content">
+                    <div class="skeleton-text skeleton-label"></div>
+                    <div class="skeleton-text skeleton-value"></div>
+                    <div class="skeleton-text skeleton-small"></div>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <p class="stat-label">Total Donors</p>
-                  <h3 class="stat-value">{{ totalDonors }}</h3>
-                  <small class="text-muted">Unique contributors</small>
-                </div>
+                <template v-else>
+                  <div class="stat-icon bg-primary">
+                    <i class="pi pi-users"></i>
+                  </div>
+                  <div class="stat-content">
+                    <p class="stat-label">Total Donors</p>
+                    <h3 class="stat-value">{{ totalDonors }}</h3>
+                    <small class="text-muted">Unique contributors</small>
+                  </div>
+                </template>
               </div>
             </div>
 
-
-
             <div class="col-xl-4 col-md-6">
               <div class="stat-card">
-                <div class="stat-icon bg-warning">
-                  <i class="pi pi-heart"></i>
+                <div v-if="loading" class="skeleton-loader">
+                  <div class="skeleton-icon"></div>
+                  <div class="skeleton-content">
+                    <div class="skeleton-text skeleton-label"></div>
+                    <div class="skeleton-text skeleton-value"></div>
+                    <div class="skeleton-text skeleton-small"></div>
+                  </div>
                 </div>
-                <div class="stat-content">
-                  <p class="stat-label">Successful Donations</p>
-                  <h3 class="stat-value">{{ stats.donationCount }} </h3>
-                  <small class="text-warning">Number of donations</small>
-                </div>
+                <template v-else>
+                  <div class="stat-icon bg-warning">
+                    <i class="pi pi-heart"></i>
+                  </div>
+                  <div class="stat-content">
+                    <p class="stat-label">Successful Donations</p>
+                    <h3 class="stat-value">{{ stats.donationCount }} </h3>
+                    <small class="text-warning">Number of donations</small>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -72,7 +100,14 @@
             <div class="col-lg-8">
               <div class="card mb-1 shadow">
                 <div class="card-body">
-                  <apexchart height="300" type="bar" :series="barChartSeries" :options="barChartOptions"></apexchart>                </div>
+                  <div v-if="loading" class="chart-skeleton">
+                    <div class="skeleton-text skeleton-chart-title mb-3"></div>
+                    <div class="skeleton-chart-bars">
+                      <div v-for="i in 12" :key="i" class="skeleton-bar" :style="`height: ${Math.random() * 60 + 40}%`"></div>
+                    </div>
+                  </div>
+                  <apexchart v-else height="300" type="bar" :series="barChartSeries" :options="barChartOptions"></apexchart>
+                </div>
               </div>
             </div>
 
@@ -80,7 +115,16 @@
               <div class="card border-0 shadow-sm">
                 <div class="card-body">
                   <h5 class="card-title mb-4">Donation by Type</h5>
-                  <div class="donation-type-list">
+                  <div v-if="loading" class="donation-type-skeleton">
+                    <div v-for="i in 3" :key="i" class="type-item-skeleton mb-3">
+                      <div class="d-flex justify-content-between mb-2">
+                        <div class="skeleton-text skeleton-type-label"></div>
+                        <div class="skeleton-text skeleton-percentage"></div>
+                      </div>
+                      <div class="skeleton-progress"></div>
+                    </div>
+                  </div>
+                  <div v-else class="donation-type-list">
                     <div class="type-item mb-3">
                       <div class="d-flex justify-content-between mb-2">
                         <span>Children's Education</span>
@@ -210,8 +254,10 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import AdminSidebar from '../../components/admin/AdminSidebar.vue';
 import AdminNavbar from '../../components/admin/AdminNavbar.vue';
+import {useAdminStore} from "@/stores/adminStore.js";
 
 const router = useRouter();
+const adminStore = useAdminStore();
 
 const adminUser = ref(localStorage.getItem('admin_user') || 'Admin');
 const currentTime = ref(new Date().toLocaleString());
@@ -270,11 +316,14 @@ setInterval(() => {
 
 const fetchStats = async () => {
   try {
-    const response = await apiService.get(`/admin/donations/stats`);
-    if (response.data.success) {
-      recentDonations.value = response.data.recentDonations;
-      data.value = response.data?.currentYear?.data || [];
-      totalDonors.value = response.data?.stats?.totalDonators || 0;
+    loading.value = true;
+
+    const response = await adminStore.getStats();
+
+    if (response.success) {
+      recentDonations.value = response.recentDonations;
+      data.value = response?.currentYear?.data || [];
+      totalDonors.value = response?.stats?.totalDonators || 0;
       populateChart()
     }
 
@@ -395,11 +444,6 @@ const closeMobileSidebar = () => {
 };
 
 onMounted(() => {
-  // Check authentication
-  if (!localStorage.getItem('admin_token')) {
-    router.push('/admin/login');
-    return;
-  }
   fetchStats();
 });
 </script>
@@ -514,5 +558,118 @@ onMounted(() => {
   to {
     opacity: 1;
   }
+}
+
+/* Skeleton Loader Styles */
+.skeleton-loader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.skeleton-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeleton-text {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.skeleton-label {
+  height: 14px;
+  width: 60%;
+}
+
+.skeleton-value {
+  height: 28px;
+  width: 80%;
+}
+
+.skeleton-small {
+  height: 12px;
+  width: 50%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Chart Skeleton Styles */
+.chart-skeleton {
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.skeleton-chart-title {
+  height: 20px;
+  width: 150px;
+}
+
+.skeleton-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 280px;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.skeleton-bar {
+  flex: 1;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  min-height: 40px;
+}
+
+/* Donation Type Skeleton Styles */
+.donation-type-skeleton {
+  width: 100%;
+}
+
+.type-item-skeleton {
+  width: 100%;
+}
+
+.skeleton-type-label {
+  height: 16px;
+  width: 70%;
+}
+
+.skeleton-percentage {
+  height: 16px;
+  width: 40px;
+}
+
+.skeleton-progress {
+  height: 8px;
+  width: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
 }
 </style>

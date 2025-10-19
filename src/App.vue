@@ -14,6 +14,17 @@
 </template>
 
 <script setup>
+
+import {useAuthStore} from "@/stores/auth.js";
+import {onMounted} from "vue";
+
+const authStore = useAuthStore();
+
+
+onMounted(async () => {
+  // Initialize auth state on app mount
+    authStore.initializeAuth();
+})
 </script>
 
 <style>

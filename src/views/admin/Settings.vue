@@ -423,11 +423,7 @@ const closeMobileSidebar = () => {
   isMobileOpen.value = false;
 };
 
-onMounted(() => {
-  if (!localStorage.getItem('admin_token')) {
-    router.push('/admin/login');
-  }
-});
+
 </script>
 
 <style scoped>
