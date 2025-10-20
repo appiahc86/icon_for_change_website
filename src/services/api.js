@@ -2,9 +2,10 @@ import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import router from '@/router'
 
+//https://server.iconghana.org
 // Create axios instance
 const apiService = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://server.iconghana.org',
     timeout: 30000,
     headers: {
         'Content-Type': 'application/json',

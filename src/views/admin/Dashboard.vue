@@ -261,15 +261,15 @@ const adminStore = useAdminStore();
 
 const adminUser = ref(localStorage.getItem('admin_user') || 'Admin');
 const currentTime = ref(new Date().toLocaleString());
-const loading = ref(true);
+const loading = ref(false);
 const isSidebarCollapsed = ref(false);
 const isMobileOpen = ref(false);
+const isFetching = ref(false);
+const isTogglingUI = ref(false);
+const showCharts = ref(true);
 
 const data = ref([])
 const totalDonors = ref(0);
-const generalCare = ref(0);
-const childrenEducation = ref(0);
-const elderlyCare = ref(0);
 
 
 //Barchart data
@@ -315,6 +315,9 @@ setInterval(() => {
 }, 60000);
 
 const fetchStats = async () => {
+  // Prevent multiple simultaneous calls
+  if (loading.value) return;
+
   try {
     loading.value = true;
 
@@ -329,6 +332,9 @@ const fetchStats = async () => {
 
   } catch (error) {
     console.error('Error fetching stats:', error);
+    if (error.response?.status === 401) {
+      router.push('/admin/login');
+    }
   } finally {
     loading.value = false;
   }
@@ -338,16 +344,21 @@ const fetchStats = async () => {
 const stats = computed(() => {
   let annualDonations = 0;
   let donationCount = 0;
+  let elderlyCare = 0;
+  let generalCare = 0;
+  let childrenEducation = 0;
+
   for (const d of data.value) {
     annualDonations += d.totalAmount;
     donationCount += d.donationCount;
 
     //donation type
-    if (d.donationType === "Elderly Care") elderlyCare.value += d.totalAmount;
-    if (d.donationType === "General") generalCare.value += d.totalAmount;
-    if (d.donationType === "Children Education") childrenEducation.value += d.totalAmount;
+    if (d.donationType === "Elderly Care") elderlyCare += d.totalAmount;
+    if (d.donationType === "General") generalCare += d.totalAmount;
+    if (d.donationType === "Children Education") childrenEducation += d.totalAmount;
   }
-  return { annualDonations, donationCount }
+
+  return { annualDonations, donationCount, elderlyCare, generalCare, childrenEducation }
 })
 
 //Get Percentages on Donation Type
@@ -355,14 +366,16 @@ const percentages = computed(() => {
   let childrenPercentage = 0;
   let generalPercentage = 0;
   let elderlyPercentage = 0;
-  const total = childrenEducation.value + generalCare.value + elderlyCare.value;
 
-  childrenPercentage = (childrenEducation.value / total) * 100;
-  generalPercentage = (generalCare.value / total) * 100;
-  elderlyPercentage = (elderlyCare.value / total) * 100;
+  const total = stats.value.childrenEducation + stats.value.generalCare + stats.value.elderlyCare;
+
+  if (total > 0) {
+    childrenPercentage = (stats.value.childrenEducation / total) * 100;
+    generalPercentage = (stats.value.generalCare / total) * 100;
+    elderlyPercentage = (stats.value.elderlyCare / total) * 100;
+  }
 
   return {childrenPercentage, generalPercentage, elderlyPercentage}
-
 })
 
 
@@ -425,18 +438,38 @@ const getStatusClass = (status) => {
 };
 
 const refreshData = () => {
-  loading.value = true;
-  fetchStats();
+  // Prevent multiple clicks
+  if (loading.value) return;
+  window.location.reload();
+  // requestAnimationFrame(() => {
+  //   loading.value = true;
+  //   fetchStats();
+  // });
 };
 
 const toggleSidebar = () => {
-  // On mobile, toggle the mobile open state
-  if (window.innerWidth <= 768) {
-    isMobileOpen.value = !isMobileOpen.value;
-  } else {
-    // On desktop, toggle collapse state
-    isSidebarCollapsed.value = !isSidebarCollapsed.value;
-  }
+  // Prevent multiple rapid toggles
+  if (isTogglingUI.value) return;
+
+  isTogglingUI.value = true;
+
+  // Hide charts temporarily to prevent re-render freeze
+  showCharts.value = false;
+
+  // Use setTimeout to ensure smooth state change
+  setTimeout(() => {
+    if (window.innerWidth <= 768) {
+      isMobileOpen.value = !isMobileOpen.value;
+    } else {
+      isSidebarCollapsed.value = !isSidebarCollapsed.value;
+    }
+
+    // Show charts again after sidebar transition completes
+    setTimeout(() => {
+      showCharts.value = true;
+      isTogglingUI.value = false;
+    }, 350);
+  }, 16); // Next frame
 };
 
 const closeMobileSidebar = () => {
@@ -453,20 +486,30 @@ onMounted(() => {
   display: flex;
   min-height: 100vh;
   background: #f8f9fa;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .main-content {
   flex: 1;
   margin-left: 260px;
   transition: margin-left 0.3s ease;
+  overflow-x: hidden;
+  max-width: calc(100vw - 260px);
+  will-change: margin-left, max-width;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .main-content.sidebar-collapsed {
   margin-left: 80px;
+  max-width: calc(100vw - 80px);
 }
 
 .content-area {
-  padding: 2rem;
+  padding: 1rem;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .stat-card {
@@ -534,9 +577,27 @@ onMounted(() => {
   padding: 1rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
   .main-content {
     margin-left: 0;
+    max-width: 100vw;
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 991px) {
+  .main-content {
+    margin-left: 80px;
+    max-width: calc(100vw - 80px);
+  }
+}
+
+@media (min-width: 768px) {
+  .content-area {
+    padding: 2rem;
   }
 }
 

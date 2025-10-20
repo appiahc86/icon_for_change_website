@@ -382,7 +382,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, watch, reactive} from 'vue';
+import {ref, computed, onMounted, watch, reactive, nextTick} from 'vue';
 import { useRouter } from 'vue-router';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -390,17 +390,20 @@ import Dialog from 'primevue/dialog';
 import ProgressSpinner from 'primevue/progressspinner';
 import AdminSidebar from '../../components/admin/AdminSidebar.vue';
 import AdminNavbar from '../../components/admin/AdminNavbar.vue';
-import apiService from '../../config/index.js';
+import {useAdminStore} from "@/stores/adminStore.js";
 
 const router = useRouter();
+const adminStore = useAdminStore();
 
-const loading = ref(true);
+const loading = ref(false);
 const donations = ref([]);
 const selectedDonations = ref([]);
 const selectedDonation = ref(null);
 const showViewDialog = ref(false);
 const isSidebarCollapsed = ref(false);
 const isMobileOpen = ref(false);
+const isFetching = ref(false);
+const isTogglingUI = ref(false);
 
 // Pagination state
 const currentPage = ref(1);
@@ -418,8 +421,13 @@ const filters = reactive({
 
 // Debounce timer for search
 let searchDebounceTimer = null;
+const isInitialized = ref(false);
 
 const fetchDonations = async () => {
+  // Prevent multiple simultaneous calls
+  if (isFetching.value) return;
+
+  isFetching.value = true;
   loading.value = true;
   try {
     // Build query parameters
@@ -447,25 +455,21 @@ const fetchDonations = async () => {
     }
 
 
-    const response = await apiService.get(
-        `/admin/donations`,
-        {
-          params: {...params}
-        }
-        );
-    if (response.data.success) {
-      donations.value = response.data.donations;
-      totalRecords.value = response.data.total || response.data.donations.length;
+    const response = await adminStore.getDonations(params);
+
+
+    if (response?.success) {
+      donations.value = response.donations;
+      totalRecords.value = response.total || response.data.donations.length;
 
       // Update pagination info if provided by backend
       if (response.data.pagination) {
-        currentPage.value = response.data.pagination.page || currentPage.value;
-        itemsPerPage.value = response.data.pagination.limit || itemsPerPage.value;
-        totalRecords.value = response.data.pagination.total || totalRecords.value;
+        currentPage.value = response.pagination.page || currentPage.value;
+        itemsPerPage.value = response.pagination.limit || itemsPerPage.value;
+        totalRecords.value = response.pagination.total || totalRecords.value;
       }
     }
 
-    console.log(response.data)
 
 
   } catch (error) {
@@ -476,14 +480,16 @@ const fetchDonations = async () => {
     }
   } finally {
     loading.value = false;
+    isFetching.value = false;
   }
 };
 
 // For mobile view - use paginatedDonations computed for compatibility
 const paginatedDonations = computed(() => donations.value);
 
-// Watchers for filters - debounce search input, trigger immediate for others
+// Watchers for filters - only run after initialization
 watch(() => filters.search, (newVal, oldVal) => {
+  if (!isInitialized.value) return;
   if (newVal !== oldVal) {
     // Clear previous timer
     if (searchDebounceTimer) {
@@ -498,31 +504,37 @@ watch(() => filters.search, (newVal, oldVal) => {
 });
 
 watch(() => filters.payment_status, () => {
+  if (!isInitialized.value) return;
   currentPage.value = 1;
   fetchDonations();
 });
 
 watch(() => filters.donation_type, () => {
+  if (!isInitialized.value) return;
   currentPage.value = 1;
   fetchDonations();
 });
 
 watch(() => filters.dateFrom, () => {
+  if (!isInitialized.value) return;
   currentPage.value = 1;
   fetchDonations();
 });
 
 watch(() => filters.dateTo, () => {
+  if (!isInitialized.value) return;
   currentPage.value = 1;
   fetchDonations();
 });
 
 // Watch pagination changes
 watch(currentPage, () => {
+  if (!isInitialized.value) return;
   fetchDonations();
 });
 
 watch(itemsPerPage, () => {
+  if (!isInitialized.value) return;
   currentPage.value = 1; // Reset to first page when changing items per page
   fetchDonations();
 });
@@ -578,7 +590,12 @@ const clearFilters = () => {
 };
 
 const refreshData = () => {
-  fetchDonations();
+  // Prevent multiple clicks
+  if (isFetching.value || loading.value) return;
+
+  requestAnimationFrame(() => {
+    fetchDonations();
+  });
 };
 
 const exportData = () => {
@@ -587,21 +604,32 @@ const exportData = () => {
 };
 
 const toggleSidebar = () => {
-  // On mobile, toggle the mobile open state
+  // Prevent multiple rapid toggles
+  if (isTogglingUI.value) return;
+
+  isTogglingUI.value = true;
+
+  // Direct state change without requestAnimationFrame
   if (window.innerWidth <= 768) {
     isMobileOpen.value = !isMobileOpen.value;
   } else {
-    // On desktop, toggle collapse state
     isSidebarCollapsed.value = !isSidebarCollapsed.value;
   }
+
+  // Reset toggle guard after transition
+  setTimeout(() => {
+    isTogglingUI.value = false;
+  }, 350);
 };
 
 const closeMobileSidebar = () => {
   isMobileOpen.value = false;
 };
 
-onMounted(() => {
-  fetchDonations();
+onMounted(async () => {
+  await fetchDonations();
+  // Enable watchers after initial data load
+  isInitialized.value = true;
 });
 </script>
 
@@ -620,6 +648,9 @@ onMounted(() => {
   transition: margin-left 0.3s ease;
   overflow-x: hidden;
   max-width: calc(100vw - 260px);
+  will-change: margin-left, max-width;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .main-content.sidebar-collapsed {

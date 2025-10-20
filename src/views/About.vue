@@ -377,12 +377,12 @@
           Together, we can create a brighter future for Ghana's children and elderly
         </p>
         <div>
-          <router-link to="/donate" class="btn btn-light btn-lg me-3 mb-2">
+          <button @click="router.push('/donate')" class="btn btn-light btn-lg me-3 mb-2">
             <i class="pi pi-heart me-2"></i>Donate
-          </router-link>
-          <router-link to="/contact" class="btn btn-outline-light btn-lg mb-2">
+          </button>
+          <button @click="router.push('/contact')" class="btn btn-outline-light btn-lg mb-2">
             Get Involved
-          </router-link>
+          </button>
         </div>
       </div>
     </section>
@@ -395,6 +395,9 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const heroSection = ref(null);
 const impactSection = ref(null);

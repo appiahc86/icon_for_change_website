@@ -114,9 +114,11 @@ const handleLogout = () => {
   bottom: 0;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, transform 0.3s ease;
   z-index: 1000;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  will-change: transform, width;
+  contain: layout style paint;
 }
 
 .admin-sidebar.collapsed {

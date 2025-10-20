@@ -1,5 +1,6 @@
 <template>
   <Navbar />
+  <Toast />
   <div class="donation-success-page">
     <section class="success-section py-5">
       <div class="container">
@@ -137,12 +138,15 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import ProgressSpinner from 'primevue/progressspinner';
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
 import {useHomeStore} from "@/stores/home.js";
 
 const route = useRoute();
 const homeStore = useHomeStore();
+const toast = useToast();
 
 const isVerifying = ref(true);
 const paymentVerified = ref(false);
@@ -212,28 +216,118 @@ const shareOnSocial = async () => {
 const copyLinkToClipboard = async () => {
   try {
     await navigator.clipboard.writeText(window.location.origin);
-    alert('Link copied to clipboard! Share it with your friends.');
+    toast.add({
+      severity: 'success',
+      summary: 'Link Copied!',
+      detail: 'Share link copied to clipboard. Paste it to share with your friends!',
+      life: 4000
+    });
   } catch (error) {
     console.error('Failed to copy link:', error);
-    // Final fallback - show a prompt with the link
-    prompt('Copy this link to share:', window.location.origin);
+    toast.add({
+      severity: 'warn',
+      summary: 'Copy Failed',
+      detail: 'Please manually copy the link from your browser.',
+      life: 4000
+    });
   }
 };
 
 const shareOnFacebook = () => {
-  const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}`;
-  window.open(url, '_blank', 'width=600,height=400');
+  try {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}`;
+    const popup = window.open(url, '_blank', 'width=600,height=400,noopener,noreferrer');
+
+    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      // Popup was blocked
+      toast.add({
+        severity: 'warn',
+        summary: 'Popup Blocked',
+        detail: 'Please allow popups to share on social media.',
+        life: 4000
+      });
+    } else {
+      toast.add({
+        severity: 'info',
+        summary: 'Opening Facebook',
+        detail: 'Share window opening...',
+        life: 2000
+      });
+    }
+  } catch (error) {
+    console.error('Error opening Facebook share:', error);
+    toast.add({
+      severity: 'error',
+      summary: 'Share Error',
+      detail: 'Unable to open Facebook share. Please try again.',
+      life: 4000
+    });
+  }
 };
 
 const shareOnTwitter = () => {
-  const text = 'I just donated to @IconOfChangeLGB to support children and elderly persons in Ghana! Join me in making a difference.';
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.origin)}`;
-  window.open(url, '_blank', 'width=600,height=400');
+  try {
+    const text = 'I just donated to @IconOfChangeLGB to support children and elderly persons in Ghana! Join me in making a difference.';
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.origin)}`;
+    const popup = window.open(url, '_blank', 'width=600,height=400,noopener,noreferrer');
+
+    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      // Popup was blocked
+      toast.add({
+        severity: 'warn',
+        summary: 'Popup Blocked',
+        detail: 'Please allow popups to share on social media.',
+        life: 4000
+      });
+    } else {
+      toast.add({
+        severity: 'info',
+        summary: 'Opening Twitter',
+        detail: 'Share window opening...',
+        life: 2000
+      });
+    }
+  } catch (error) {
+    console.error('Error opening Twitter share:', error);
+    toast.add({
+      severity: 'error',
+      summary: 'Share Error',
+      detail: 'Unable to open Twitter share. Please try again.',
+      life: 4000
+    });
+  }
 };
 
 const shareOnLinkedIn = () => {
-  const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin)}`;
-  window.open(url, '_blank', 'width=600,height=400');
+  try {
+    const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin)}`;
+    const popup = window.open(url, '_blank', 'width=600,height=400,noopener,noreferrer');
+
+    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      // Popup was blocked
+      toast.add({
+        severity: 'warn',
+        summary: 'Popup Blocked',
+        detail: 'Please allow popups to share on social media.',
+        life: 4000
+      });
+    } else {
+      toast.add({
+        severity: 'info',
+        summary: 'Opening LinkedIn',
+        detail: 'Share window opening...',
+        life: 2000
+      });
+    }
+  } catch (error) {
+    console.error('Error opening LinkedIn share:', error);
+    toast.add({
+      severity: 'error',
+      summary: 'Share Error',
+      detail: 'Unable to open LinkedIn share. Please try again.',
+      life: 4000
+    });
+  }
 };
 
 onMounted(() => {

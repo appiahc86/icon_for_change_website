@@ -106,7 +106,7 @@ const notifications = ref([
   }
 ]);
 
-const toggleSidebar = () => {
+const toggleSidebar = (event) => {
   emit('toggle-sidebar');
 };
 
@@ -118,11 +118,7 @@ const markAllRead = () => {
   notificationCount.value = 0;
 };
 
-const handleLogout = () => {
-  localStorage.removeItem('admin_token');
-  localStorage.removeItem('admin_user');
-  router.push('/admin/login');
-};
+
 
 // Close dropdowns when clicking outside
 const handleClickOutside = (event) => {

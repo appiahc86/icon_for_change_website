@@ -22,7 +22,7 @@
               <div class="card-body p-5">
                 <h2 class="text-center mb-4">Support Our Mission</h2>
 
-                <Toast ref="toast" />
+                <Toast />
 
                 <form @submit.prevent="handleDonation">
                   <!-- Donation Type -->
