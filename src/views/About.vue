@@ -940,6 +940,11 @@ onUnmounted(() => {
   padding: 80px 0;
 }
 
+.cta-section .container {
+  position: relative;
+  z-index: 1;
+}
+
 .cta-section::before,
 .cta-section::after {
   content: '';
@@ -947,6 +952,8 @@ onUnmounted(() => {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   animation: rotate 30s linear infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .cta-section::before {
