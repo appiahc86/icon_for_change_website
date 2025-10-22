@@ -24,6 +24,7 @@
             <li><router-link to="/" class="footer-link">Home</router-link></li>
             <li><router-link to="/about" class="footer-link">About Us</router-link></li>
             <li><router-link to="/programs" class="footer-link">Programs</router-link></li>
+            <li><router-link to="/schools" class="footer-link">Schools</router-link></li>
             <li><router-link to="/impact" class="footer-link">Impact</router-link></li>
           </ul>
         </div>

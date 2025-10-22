@@ -34,6 +34,12 @@ const routes = [
     },
 
     {
+        path: '/schools',
+        name: 'Schools',
+        component: () => import('../views/Schools.vue'),
+        meta: { title: 'Our Schools - Icon of Change LGB Ghana' }
+    },
+    {
         path: '/contact',
         name: 'Contact',
         component: () => import('../views/Contact.vue'),

@@ -173,6 +173,92 @@
       </div>
     </section>
 
+    <!-- Featured School Section -->
+    <section class="featured-school py-5">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title d-inline-block">Our School</h2>
+          <p class="lead text-muted mt-3">Empowering the next generation through quality education</p>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 animate-on-scroll" data-animation="slide-in-left">
+            <div class="school-image-wrapper">
+              <img src="/images/schools/kontoh/main.jpeg"
+                   alt="Kontoh Educational Complex"
+                   class="img-fluid rounded shadow-lg"
+                   @error="handleImageError">
+              <div class="school-badge">
+                <i class="pi pi-building"></i>
+                <span>Our School</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-4 animate-on-scroll" data-animation="slide-in-right">
+            <div class="school-content">
+              <h3 class="display-6 fw-bold mb-3">Kontoh Educational Complex</h3>
+              <div class="school-location mb-4">
+                <i class="pi pi-map-marker text-primary me-2"></i>
+                <span class="text-muted">Fumesua, Ashanti Region, Ghana</span>
+              </div>
+
+              <p class="lead mb-4">
+                A beacon of hope and learning, providing quality basic education to children in the Fumesua community.
+              </p>
+
+              <div class="school-stats-mini mb-4">
+                <div class="row text-center">
+                  <div class="col-4">
+                    <div class="mini-stat">
+                      <h4 class="text-primary mb-1">350+</h4>
+                      <p class="text-muted small mb-0">Students</p>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mini-stat">
+                      <h4 class="text-primary mb-1">18</h4>
+                      <p class="text-muted small mb-0">Teachers</p>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mini-stat">
+                      <h4 class="text-primary mb-1">12</h4>
+                      <p class="text-muted small mb-0">Classrooms</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="school-highlights mb-4">
+                <div class="highlight-item d-flex align-items-start mb-2">
+                  <i class="pi pi-check text-success me-2 mt-1"></i>
+                  <span>Quality basic education programs</span>
+                </div>
+                <div class="highlight-item d-flex align-items-start mb-2">
+                  <i class="pi pi-check text-success me-2 mt-1"></i>
+                  <span>Modern learning facilities</span>
+                </div>
+                <div class="highlight-item d-flex align-items-start mb-2">
+                  <i class="pi pi-check text-success me-2 mt-1"></i>
+                  <span>Dedicated teaching staff</span>
+                </div>
+              </div>
+
+              <div class="school-actions">
+                <router-link to="/schools" class="btn btn-primary-custom text-white me-3">
+                  <i class="pi pi-info-circle me-2"></i>Learn More
+                </router-link>
+                <router-link to="/donate" class="btn btn-outline-primary">
+                  <i class="pi pi-heart me-2"></i>Support the School
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Get Involved Section -->
     <section class="get-involved py-5">
       <div class="container">
@@ -359,6 +445,12 @@ const observeElements = () => {
   if (statsSection.value) {
     observer.observe(statsSection.value);
   }
+};
+
+// Handle image loading errors
+const handleImageError = (event) => {
+  // Fallback to a placeholder or another image
+  event.target.src = '/images/programs/children_education.jpeg';
 };
 
 onMounted(() => {
@@ -836,6 +928,100 @@ onUnmounted(() => {
   border-radius: 2px;
 }
 
+/* Featured School Section */
+.featured-school {
+  background: white;
+}
+
+.school-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.school-image-wrapper img {
+  transition: transform 0.6s ease;
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.school-image-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+.school-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.school-badge i {
+  font-size: 1.2rem;
+}
+
+.school-content {
+  padding: 1rem;
+}
+
+.school-location {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.school-stats-mini {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+}
+
+.mini-stat {
+  padding: 0.5rem;
+}
+
+.mini-stat h4 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.school-highlights {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.school-highlights .highlight-item {
+  transition: all 0.3s ease;
+}
+
+.school-highlights .highlight-item:hover {
+  transform: translateX(5px);
+}
+
+.school-actions .btn {
+  margin-bottom: 0.5rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-section {
@@ -857,6 +1043,15 @@ onUnmounted(() => {
 
   .focus-icon i {
     font-size: 2rem;
+  }
+
+  .school-image-wrapper img {
+    height: 300px;
+  }
+
+  .school-actions .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
 }
 </style>
