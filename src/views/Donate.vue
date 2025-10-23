@@ -33,7 +33,7 @@
                         <div class="donation-type-card"
                              :class="{ active: donationForm.donationType === 'Children Education' }"
                              @click="donationForm.donationType = 'Children Education'">
-                          <i class="pi pi-graduation-cap"></i>
+                          <i class="pi pi-user"></i>
                           <p class="mb-0">Children's Education</p>
                         </div>
                       </div>
