@@ -12,6 +12,7 @@ import { createPinia } from 'pinia';
 import 'primevue/resources/themes/lara-light-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 
+import 'vue-toastification/dist/index.css';
 // Bootstrap JS for components
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 

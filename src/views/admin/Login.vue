@@ -8,7 +8,7 @@
           <p class="text-muted">Admin Dashboard Login</p>
         </div>
 
-        <Toast />
+<!--        <Toast />-->
 
         <form @submit.prevent="handleLogin">
           <div class="mb-3">

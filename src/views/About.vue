@@ -88,6 +88,55 @@
       </div>
     </section>
 
+    <!-- Objectives Section -->
+    <section class="objectives-section py-5">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title d-inline-block">Our Objectives</h2>
+          <p class="lead text-muted mt-3">What we are working to achieve</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-6 animate-on-scroll" data-animation="zoom-in">
+            <div class="objective-item">
+              <i class="pi pi-check-square objective-icon"></i>
+              <span>Open the door to learning for children from struggling families through scholarships, books and school supplies</span>
+            </div>
+          </div>
+          <div class="col-md-6 animate-on-scroll" data-animation="zoom-in">
+            <div class="objective-item">
+              <i class="pi pi-check-square objective-icon"></i>
+              <span>Bring free health screenings and growth checks to children and older persons right in their communities</span>
+            </div>
+          </div>
+          <div class="col-md-6 animate-on-scroll" data-animation="zoom-in">
+            <div class="objective-item">
+              <i class="pi pi-check-square objective-icon"></i>
+              <span>Protect the dignity of our elders with companionship, regular visits and access to care</span>
+            </div>
+          </div>
+          <div class="col-md-6 animate-on-scroll" data-animation="zoom-in">
+            <div class="objective-item">
+              <i class="pi pi-check-square objective-icon"></i>
+              <span>Fight child malnutrition by teaching mothers about nutrition and supporting families in need</span>
+            </div>
+          </div>
+          <div class="col-md-6 animate-on-scroll" data-animation="zoom-in">
+            <div class="objective-item">
+              <i class="pi pi-check-square objective-icon"></i>
+              <span>Stand up for the rights and welfare of vulnerable children and the elderly</span>
+            </div>
+          </div>
+          <div class="col-md-6 animate-on-scroll" data-animation="zoom-in">
+            <div class="objective-item">
+              <i class="pi pi-check-square objective-icon"></i>
+              <span>Build lasting partnerships with families, volunteers and local leaders so that change continues long after our visit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Impact Metrics Section -->
     <section class="impact-metrics py-5 bg-light" ref="impactSection">
       <div class="container">
@@ -304,6 +353,36 @@
                 Serving all individuals regardless of their culture, religion, or socio-economic background.
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section class="leadership-section py-5 bg-light">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title d-inline-block">Our Leadership</h2>
+          <p class="lead text-muted mt-3">The leader guiding our mission</p>
+        </div>
+
+        <div class="row justify-content-center align-items-center g-5 animate-on-scroll" data-animation="zoom-in">
+          <div class="col-md-5 col-lg-4 text-center">
+            <div class="director-photo-wrapper">
+              <img src="/images/team/emmanuel-essien.jpeg"
+                   alt="Mr Emmanuel Essien, Director"
+                   class="director-photo">
+            </div>
+          </div>
+          <div class="col-md-7 col-lg-7">
+            <h3 class="director-name mb-1">Mr Emmanuel Essien</h3>
+            <p class="director-role mb-4">Director</p>
+            <blockquote class="director-quote">
+              <i class="pi pi-quote-left quote-icon"></i>
+              <p class="mb-0">
+                True social work leadership is not measured by the authority you hold, but by the lives you transform, the dignity you protect, and the hope you inspire. Lead with compassion, serve with integrity, and never forget the people behind the mission.
+              </p>
+            </blockquote>
           </div>
         </div>
       </div>
@@ -930,6 +1009,99 @@ onUnmounted(() => {
 .social-links a:hover {
   background: var(--accent-color);
   transform: translateY(-5px) rotate(360deg);
+}
+
+/* Objectives */
+.objective-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border-radius: 15px;
+  border-left: 5px solid var(--primary-color);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  font-size: 1.05rem;
+  color: #4a5568;
+  transition: all 0.4s ease;
+}
+
+.objective-item:hover {
+  transform: translateY(-6px);
+  border-left-color: var(--accent-color);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.objective-icon {
+  flex-shrink: 0;
+  font-size: 1.6rem;
+  color: var(--accent-color);
+}
+
+/* Leadership */
+.director-photo-wrapper {
+  width: 280px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 6px solid white;
+  box-shadow: 0 0 0 4px var(--primary-color), 0 20px 45px rgba(0, 0, 0, 0.18);
+  transition: transform 0.4s ease;
+}
+
+.director-photo-wrapper:hover {
+  transform: scale(1.03);
+}
+
+.director-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.director-name {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.director-role {
+  color: #718096;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.director-quote {
+  position: relative;
+  margin: 0;
+  padding: 2rem 2rem 2rem 2.5rem;
+  background: white;
+  border-left: 5px solid var(--accent-color);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.8;
+  color: #4a5568;
+}
+
+.director-quote .quote-icon {
+  display: block;
+  font-size: 1.6rem;
+  color: var(--primary-color);
+  opacity: 0.35;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .director-photo-wrapper { width: 220px; }
+  .director-name, .director-role { text-align: center; }
+  .director-quote { padding: 1.5rem; font-size: 1.05rem; }
 }
 
 /* CTA Section */

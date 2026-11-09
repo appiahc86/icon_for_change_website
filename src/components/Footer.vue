@@ -52,7 +52,7 @@
             </li>
             <li>
               <i class="pi pi-envelope me-2"></i>
-              info@iconghana.org
+              info@iconofchangegh.org
             </li>
           </ul>
         </div>

@@ -61,6 +61,13 @@
           >
             <i class="pi pi-globe me-2"></i>Community Events
           </button>
+          <button
+              class="btn filter-btn"
+              :class="{ active: activeFilter === 'health' }"
+              @click="activeFilter = 'health'"
+          >
+            <i class="pi pi-plus-circle me-2"></i>Health Outreach
+          </button>
 <!--          <button-->
 <!--              class="btn filter-btn"-->
 <!--              :class="{ active: activeFilter === 'volunteers' }"-->
@@ -266,8 +273,208 @@ const showLightbox = ref(false);
 const currentImageIndex = ref(0);
 const hasMore = ref(true);
 
-// Sample gallery images (replace with your actual images)
+// Gallery images
 const galleryImages = ref([
+  {
+    id: 13,
+    src: '/images/gallery/health/1.jpeg',
+    title: 'Child Immunisation Check',
+    description: 'A young child receives care from our health outreach team.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 14,
+    src: '/images/gallery/community/5.jpeg',
+    title: 'Mother and Child Gift Pack',
+    description: 'A mother and her daughter receive a gift pack during our outreach.',
+    category: 'Community Events',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 15,
+    src: '/images/gallery/health/2.jpeg',
+    title: 'Waiting for Care',
+    description: 'A mother and baby wait to be attended to at our health outreach.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 16,
+    src: '/images/gallery/community/6.jpeg',
+    title: 'Gift Packs for Families',
+    description: 'Gift packs ready to be shared with children and their families.',
+    category: 'Community Events',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 17,
+    src: '/images/gallery/health/3.jpeg',
+    title: 'Outreach Waiting Area',
+    description: 'Mothers and children wait together as the outreach gets under way.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 18,
+    src: '/images/gallery/health/4.jpeg',
+    title: 'Registration Desk',
+    description: 'Our team registers mothers and children before their checkups.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 19,
+    src: '/images/gallery/health/5.jpeg',
+    title: 'Infant Growth Check',
+    description: 'A health worker measures an infant to monitor healthy growth.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 20,
+    src: '/images/gallery/health/6.jpeg',
+    title: 'Child Weight Check',
+    description: 'A toddler is weighed as part of a routine nutrition screening.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 21,
+    src: '/images/gallery/health/7.jpeg',
+    title: 'Nutrition Screening',
+    description: 'Monitoring the growth and wellbeing of young children.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 22,
+    src: '/images/gallery/community/7.jpeg',
+    title: 'Joy at the Bouncy Castle',
+    description: 'Children gather for a day of fun, play and celebration.',
+    category: 'Community Events',
+    date: 'November 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 23,
+    src: '/images/gallery/health/8.jpeg',
+    title: 'Mothers Health Talk',
+    description: 'A full hall of mothers learn about child health and nutrition.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 24,
+    src: '/images/gallery/health/9.jpeg',
+    title: 'One-on-One Consultation',
+    description: 'A mother and her child receive personal guidance from a health worker.',
+    category: 'Health Outreach',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 25,
+    src: '/images/gallery/community/8.jpeg',
+    title: 'Gift Boxes for Children',
+    description: 'Mothers and children proudly show off their gift boxes.',
+    category: 'Community Events',
+    date: 'August 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 26,
+    src: '/images/gallery/community/9.jpeg',
+    title: 'Sharing Smiles',
+    description: 'Families gather to receive books, gifts and encouragement.',
+    category: 'Community Events',
+    date: 'August 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 27,
+    src: '/images/gallery/community/10.jpeg',
+    title: 'Families Receive Gifts',
+    description: 'Parents and children leave the outreach with gift boxes in hand.',
+    category: 'Community Events',
+    date: 'August 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 28,
+    src: '/images/gallery/children/5.jpeg',
+    title: 'Our Young Ambassadors',
+    description: 'Pupils in matching yellow shirts pose for a group photo.',
+    category: 'Children\'s Education',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'children'
+  },
+  {
+    id: 29,
+    src: '/images/gallery/community/11.jpeg',
+    title: 'Storytime Under the Shade',
+    description: 'Children enjoy books and activities outdoors in the community.',
+    category: 'Community Events',
+    date: 'August 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 30,
+    src: '/images/gallery/community/12.jpeg',
+    title: 'Gathered Around',
+    description: 'Children and mothers crowd together during a community activity.',
+    category: 'Community Events',
+    date: 'August 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 31,
+    src: '/images/gallery/children/6.jpeg',
+    title: 'Bright Futures Group Photo',
+    description: 'Smiling pupils in yellow gather by the coast for a group photo.',
+    category: 'Children\'s Education',
+    date: 'January 2026',
+    location: 'Ghana',
+    categorySlug: 'children'
+  },
+  {
+    id: 32,
+    src: '/images/gallery/community/13.jpeg',
+    title: 'Treats for the Little Ones',
+    description: 'A little boy enjoys a treat during the outreach.',
+    category: 'Community Events',
+    date: 'August 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
   {
     id: 1,
     src: '/images/gallery/children/1.jpeg',
@@ -430,6 +637,7 @@ const getCategoryClass = (category) => {
     'Children\'s Education': 'bg-primary',
     'Elderly Care': 'bg-success',
     'Community Events': 'bg-info',
+    'Health Outreach': 'bg-danger',
     // 'Volunteers': 'bg-warning text-dark'
   };
   return classes[category] || 'bg-secondary';

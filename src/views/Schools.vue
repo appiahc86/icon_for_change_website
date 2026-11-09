@@ -35,6 +35,10 @@
                   </p>
                 </div>
                 <div class="col-lg-4 text-lg-end">
+                  <a href="https://kecomplex.org/" target="_blank"
+                     class="btn btn-secondary text-white btn-lg me-2 mb-2">
+                    <i class="bi bi-heart me-2"></i>Visit our website
+                  </a>
                   <a href="#donate-section" class="btn btn-primary-custom text-white btn-lg">
                     <i class="bi bi-heart-fill me-2"></i>Support This School
                   </a>
