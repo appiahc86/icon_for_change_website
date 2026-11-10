@@ -1,9 +1,9 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top p-0">
     <div class="container">
       <router-link to="/" class="navbar-brand d-flex align-items-center">
 <!--        <i class="pi pi-heart-fill me-2" style="font-size: 1.8rem; color: var(&#45;&#45;accent-color);"></i>-->
-        <img src="/logo1.png" class="navbar-brand"  width="131" >
+        <img src="/logo.jpeg" class="navbar-brand"  width="60" height="70">
       </router-link>
 
       <button

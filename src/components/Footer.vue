@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="d-flex align-items-center mb-3">
-            <image src="/logo2.png" class="img-fluid mx-auto mb-4" alt="Logo"></image>
+            <image src="/logof.png" class="img-fluid mx-auto mb-4" alt="Logo" width="65" height="75"></image>
 <!--            <i class="pi pi-heart-fill me-2" style="font-size: 2rem; color: var(&#45;&#45;accent-color);"></i>-->
 <!--            <h5 class="mb-0">Icon of Change LGB</h5>-->
           </div>
