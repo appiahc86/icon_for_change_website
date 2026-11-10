@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance
 const apiService = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://server.iconofchangegh.org',
     timeout: 30000,
     headers: {
         'Content-Type': 'application/json',

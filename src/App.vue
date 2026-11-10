@@ -80,7 +80,7 @@ body {
 }
 
 .btn-primary-custom {
-  background: var(--primary-color);
+  background: #ec8a3c;
   border: none;
   padding: 12px 30px;
   font-weight: 600;

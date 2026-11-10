@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
       <router-link to="/" class="navbar-brand d-flex align-items-center">
-        <i class="pi pi-heart-fill me-2" style="font-size: 1.8rem; color: var(--accent-color);"></i>
-        <span class="fw-bold" style="color: var(--primary-color);">Icon of Change LGB</span>
+<!--        <i class="pi pi-heart-fill me-2" style="font-size: 1.8rem; color: var(&#45;&#45;accent-color);"></i>-->
+        <img src="/logo1.png" class="navbar-brand"  width="131" >
       </router-link>
 
       <button

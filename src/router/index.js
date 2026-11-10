@@ -87,33 +87,33 @@ const routes = [
             requiresAuth: true
         }
     },
-    {
-        path: '/admin/donators',
-        name: 'AdminDonators',
-        component: () => import('../views/admin/Donators.vue'),
-        meta: {
-            title: 'Donators - Admin',
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/admin/messages',
-        name: 'AdminMessages',
-        component: () => import('../views/admin/Messages.vue'),
-        meta: {
-            title: 'Messages - Admin',
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/admin/settings',
-        name: 'AdminSettings',
-        component: () => import('../views/admin/Settings.vue'),
-        meta: {
-            title: 'Settings - Admin',
-            requiresAuth: true
-        }
-    },
+    // {
+    //     path: '/admin/donators',
+    //     name: 'AdminDonators',
+    //     component: () => import('../views/admin/Donators.vue'),
+    //     meta: {
+    //         title: 'Donators - Admin',
+    //         requiresAuth: true
+    //     }
+    // },
+    // {
+    //     path: '/admin/messages',
+    //     name: 'AdminMessages',
+    //     component: () => import('../views/admin/Messages.vue'),
+    //     meta: {
+    //         title: 'Messages - Admin',
+    //         requiresAuth: true
+    //     }
+    // },
+    // {
+    //     path: '/admin/settings',
+    //     name: 'AdminSettings',
+    //     component: () => import('../views/admin/Settings.vue'),
+    //     meta: {
+    //         title: 'Settings - Admin',
+    //         requiresAuth: true
+    //     }
+    // },
     {
         path: '/admin',
         redirect: '/admin/dashboard'

@@ -25,13 +25,15 @@
 
                 <Toast />
 
-                <form @submit.prevent="handleSubmit">
+                <form @submit.prevent="handleSubmit"  ref="myForm" id="contact-form">
                   <div class="row mb-3">
                     <div class="col-md-6 mb-3">
                       <label class="form-label fw-bold">Full Name *</label>
                       <input
+                          id="form_name"
                           type="text"
-                          v-model="contactForm.name"
+                          v-model.trim="name"
+                          name="name"
                           class="form-control"
                           placeholder="Your name"
                           required
@@ -41,7 +43,9 @@
                       <label class="form-label fw-bold">Email Address *</label>
                       <input
                           type="email"
-                          v-model="contactForm.email"
+                          id="form_email"
+                          name="email"
+                          v-model.trim="email"
                           class="form-control"
                           placeholder="your@email.com"
                           required
@@ -52,8 +56,11 @@
                   <div class="mb-3">
                     <label class="form-label fw-bold">Subject</label>
                     <input
+                        id="form_subject"
                         type="text"
-                        v-model="contactForm.subject"
+                        name="subject"
+                        v-model.trim="subject"
+                        required
                         class="form-control"
                         placeholder="What is this about?"
                     />
@@ -62,7 +69,9 @@
                   <div class="mb-4">
                     <label class="form-label fw-bold">Message *</label>
                     <textarea
-                        v-model="contactForm.message"
+                        id="form_message"
+                        v-model.trim="message"
+                        name="message"
                         rows="6"
                         class="form-control"
                         placeholder="Tell us more..."
@@ -72,7 +81,7 @@
 
                   <button
                       type="submit"
-                      class="btn btn-primary-custom text-white w-100"
+                      class="btn btn-primary text-white w-100"
                       :disabled="isSubmitting"
                   >
                     <i class="pi pi-send me-2"></i>
@@ -114,7 +123,7 @@
                 </div>
                 <div class="info-content">
                   <h5>Email Address</h5>
-                  <p class="text-muted mb-0">info@iconghana.org</p>
+                  <p class="text-muted mb-0">info@iconofchangegh.org</p>
                 </div>
               </div>
 
@@ -168,21 +177,20 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import Toast from 'primevue/toast';
+import emailjs from '@emailjs/browser';
 import { useToast } from 'primevue/usetoast';
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
 
 const toast = useToast();
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
-const contactForm = ref({
-  name: '',
-  email: '',
-  subject: '',
-  message: ''
-});
+
+const myForm = ref();
+const email = ref('');
+const name = ref('');
+const message = ref('');
+const subject = ref('');
 
 const isSubmitting = ref(false);
 
@@ -190,14 +198,35 @@ const handleSubmit = async () => {
   isSubmitting.value = true;
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/contact`, {
-      name: contactForm.value.name,
-      email: contactForm.value.email,
-      subject: contactForm.value.subject,
-      message: contactForm.value.message
-    });
 
-    if (response.data.success) {
+    if (!email.value.match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)){
+      return toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please Enter a valid email address',
+        life: 5000
+      });
+    }
+
+    if (name.value.trim().length < 2) {
+      return toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please Enter your name.',
+        life: 5000
+      });
+    }
+
+
+    const result = await emailjs.sendForm(
+        'service_kn4obfj',
+
+        'icon_template',
+               myForm.value,
+        'VmmKnaNhe1vZoKo3c' //public key
+    );
+
+
       toast.add({
         severity: 'success',
         summary: 'Message Sent',
@@ -206,13 +235,12 @@ const handleSubmit = async () => {
       });
 
       // Reset form
-      contactForm.value = {
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      };
-    }
+    myForm.value.reset();
+    email.value = "";
+    name.value = "";
+    subject.value = "";
+    message.value = "";
+
   } catch (error) {
     console.error('Contact form error:', error);
     toast.add({
