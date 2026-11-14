@@ -3,7 +3,7 @@
     <div class="container">
       <router-link to="/" class="navbar-brand d-flex align-items-center">
 <!--        <i class="pi pi-heart-fill me-2" style="font-size: 1.8rem; color: var(&#45;&#45;accent-color);"></i>-->
-        <img src="/logo.jpeg" class="navbar-brand"  width="60" height="70">
+        <img src="/logo.jpeg" class="navbar-brand"  width="60" height="70" alt="logo">
       </router-link>
 
       <button
@@ -39,7 +39,7 @@
             <router-link to="/contact" class="nav-link">Contact</router-link>
           </li>
           <li class="nav-item ms-lg-3">
-            <router-link to="/donate" class="btn btn-primary-custom btn-sm text-white">
+            <router-link to="/donate" class="btn btn-primary-custom btn-sm text-white donate-btn">
               <i class="pi pi-heart me-1"></i> Donate Now
             </router-link>
           </li>
@@ -82,4 +82,11 @@
 .navbar-brand:hover {
   transform: scale(1.05);
 }
+
+@media screen and (max-width: 990px) {
+  .donate-btn {
+    margin-bottom: 20px !important;
+  }
+}
+
 </style>

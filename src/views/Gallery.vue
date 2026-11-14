@@ -120,7 +120,13 @@
           >
             <div class="gallery-card" @click="openLightbox(index)">
               <div class="image-wrapper">
-                <img :src="image.src" :alt="image.title" class="gallery-image" />
+                <img
+                  :src="thumbOf(image.src)"
+                  :alt="image.title"
+                  class="gallery-image"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div class="image-overlay">
                   <div class="overlay-content">
                     <h5 class="text-white mb-2">{{ image.title }}</h5>
@@ -263,7 +269,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import Dialog from 'primevue/dialog';
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
@@ -276,18 +282,68 @@ const hasMore = ref(true);
 // Gallery images
 const galleryImages = ref([
   {
+    id: 33,
+    src: '/images/gallery/health/11.webp',
+    title: 'Handwashing Lesson',
+    description: 'A little girl learns proper handwashing at our hygiene station.',
+    category: 'Health Outreach',
+    date: 'November 2025',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 34,
+    src: '/images/gallery/health/10.webp',
+    title: 'Blood Pressure Checks',
+    description: 'Our team checks mothers\' blood pressure while others wait their turn.',
+    category: 'Health Outreach',
+    date: 'August 2025',
+    location: 'Ghana',
+    categorySlug: 'health'
+  },
+  {
+    id: 35,
+    src: '/images/gallery/children/7.webp',
+    title: 'Gifts for Pupils',
+    description: 'Pupils in their blue school uniforms receive gift packs from our team.',
+    category: 'Children\'s Education',
+    date: 'November 2025',
+    location: 'Ghana',
+    categorySlug: 'children'
+  },
+  {
+    id: 36,
+    src: '/images/gallery/community/14.webp',
+    title: 'Mothers Raise Their Hands',
+    description: 'Mothers and children fill the hall and take part during an outreach session.',
+    category: 'Community Events',
+    date: 'November 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
+    id: 37,
+    src: '/images/gallery/community/15.webp',
+    title: 'Little Faces, Big Smiles',
+    description: 'Children gather close together at one of our community events.',
+    category: 'Community Events',
+    date: 'November 2025',
+    location: 'Ghana',
+    categorySlug: 'community'
+  },
+  {
     id: 13,
-    src: '/images/gallery/health/1.jpeg',
+    src: '/images/gallery/health/1.webp',
     title: 'Child Immunisation Check',
     description: 'A young child receives care from our health outreach team.',
     category: 'Health Outreach',
-    date: 'January 2026',
+    date: 'January 2025',
     location: 'Ghana',
     categorySlug: 'health'
   },
   {
     id: 14,
-    src: '/images/gallery/community/5.jpeg',
+    src: '/images/gallery/community/5.webp',
     title: 'Mother and Child Gift Pack',
     description: 'A mother and her daughter receive a gift pack during our outreach.',
     category: 'Community Events',
@@ -297,7 +353,7 @@ const galleryImages = ref([
   },
   {
     id: 15,
-    src: '/images/gallery/health/2.jpeg',
+    src: '/images/gallery/health/2.webp',
     title: 'Waiting for Care',
     description: 'A mother and baby wait to be attended to at our health outreach.',
     category: 'Health Outreach',
@@ -307,7 +363,7 @@ const galleryImages = ref([
   },
   {
     id: 16,
-    src: '/images/gallery/community/6.jpeg',
+    src: '/images/gallery/community/6.webp',
     title: 'Gift Packs for Families',
     description: 'Gift packs ready to be shared with children and their families.',
     category: 'Community Events',
@@ -317,7 +373,7 @@ const galleryImages = ref([
   },
   {
     id: 17,
-    src: '/images/gallery/health/3.jpeg',
+    src: '/images/gallery/health/3.webp',
     title: 'Outreach Waiting Area',
     description: 'Mothers and children wait together as the outreach gets under way.',
     category: 'Health Outreach',
@@ -327,7 +383,7 @@ const galleryImages = ref([
   },
   {
     id: 18,
-    src: '/images/gallery/health/4.jpeg',
+    src: '/images/gallery/health/4.webp',
     title: 'Registration Desk',
     description: 'Our team registers mothers and children before their checkups.',
     category: 'Health Outreach',
@@ -337,7 +393,7 @@ const galleryImages = ref([
   },
   {
     id: 19,
-    src: '/images/gallery/health/5.jpeg',
+    src: '/images/gallery/health/5.webp',
     title: 'Infant Growth Check',
     description: 'A health worker measures an infant to monitor healthy growth.',
     category: 'Health Outreach',
@@ -347,7 +403,7 @@ const galleryImages = ref([
   },
   {
     id: 20,
-    src: '/images/gallery/health/6.jpeg',
+    src: '/images/gallery/health/6.webp',
     title: 'Child Weight Check',
     description: 'A toddler is weighed as part of a routine nutrition screening.',
     category: 'Health Outreach',
@@ -357,7 +413,7 @@ const galleryImages = ref([
   },
   {
     id: 21,
-    src: '/images/gallery/health/7.jpeg',
+    src: '/images/gallery/health/7.webp',
     title: 'Nutrition Screening',
     description: 'Monitoring the growth and wellbeing of young children.',
     category: 'Health Outreach',
@@ -367,7 +423,7 @@ const galleryImages = ref([
   },
   {
     id: 22,
-    src: '/images/gallery/community/7.jpeg',
+    src: '/images/gallery/community/7.webp',
     title: 'Joy at the Bouncy Castle',
     description: 'Children gather for a day of fun, play and celebration.',
     category: 'Community Events',
@@ -377,7 +433,7 @@ const galleryImages = ref([
   },
   {
     id: 23,
-    src: '/images/gallery/health/8.jpeg',
+    src: '/images/gallery/health/8.webp',
     title: 'Mothers Health Talk',
     description: 'A full hall of mothers learn about child health and nutrition.',
     category: 'Health Outreach',
@@ -387,7 +443,7 @@ const galleryImages = ref([
   },
   {
     id: 24,
-    src: '/images/gallery/health/9.jpeg',
+    src: '/images/gallery/health/9.webp',
     title: 'One-on-One Consultation',
     description: 'A mother and her child receive personal guidance from a health worker.',
     category: 'Health Outreach',
@@ -397,7 +453,7 @@ const galleryImages = ref([
   },
   {
     id: 25,
-    src: '/images/gallery/community/8.jpeg',
+    src: '/images/gallery/community/8.webp',
     title: 'Gift Boxes for Children',
     description: 'Mothers and children proudly show off their gift boxes.',
     category: 'Community Events',
@@ -407,7 +463,7 @@ const galleryImages = ref([
   },
   {
     id: 26,
-    src: '/images/gallery/community/9.jpeg',
+    src: '/images/gallery/community/9.webp',
     title: 'Sharing Smiles',
     description: 'Families gather to receive books, gifts and encouragement.',
     category: 'Community Events',
@@ -417,7 +473,7 @@ const galleryImages = ref([
   },
   {
     id: 27,
-    src: '/images/gallery/community/10.jpeg',
+    src: '/images/gallery/community/10.webp',
     title: 'Families Receive Gifts',
     description: 'Parents and children leave the outreach with gift boxes in hand.',
     category: 'Community Events',
@@ -427,7 +483,7 @@ const galleryImages = ref([
   },
   {
     id: 28,
-    src: '/images/gallery/children/5.jpeg',
+    src: '/images/gallery/children/5.webp',
     title: 'Our Young Ambassadors',
     description: 'Pupils in matching yellow shirts pose for a group photo.',
     category: 'Children\'s Education',
@@ -437,7 +493,7 @@ const galleryImages = ref([
   },
   {
     id: 29,
-    src: '/images/gallery/community/11.jpeg',
+    src: '/images/gallery/community/11.webp',
     title: 'Storytime Under the Shade',
     description: 'Children enjoy books and activities outdoors in the community.',
     category: 'Community Events',
@@ -447,7 +503,7 @@ const galleryImages = ref([
   },
   {
     id: 30,
-    src: '/images/gallery/community/12.jpeg',
+    src: '/images/gallery/community/12.webp',
     title: 'Gathered Around',
     description: 'Children and mothers crowd together during a community activity.',
     category: 'Community Events',
@@ -457,7 +513,7 @@ const galleryImages = ref([
   },
   {
     id: 31,
-    src: '/images/gallery/children/6.jpeg',
+    src: '/images/gallery/children/6.webp',
     title: 'Bright Futures Group Photo',
     description: 'Smiling pupils in yellow gather by the coast for a group photo.',
     category: 'Children\'s Education',
@@ -467,7 +523,7 @@ const galleryImages = ref([
   },
   {
     id: 32,
-    src: '/images/gallery/community/13.jpeg',
+    src: '/images/gallery/community/13.webp',
     title: 'Treats for the Little Ones',
     description: 'A little boy enjoys a treat during the outreach.',
     category: 'Community Events',
@@ -477,7 +533,7 @@ const galleryImages = ref([
   },
   {
     id: 1,
-    src: '/images/gallery/children/1.jpeg',
+    src: '/images/gallery/children/1.webp',
     title: 'Bright Futures',
     description: 'Empowering children through access to quality education, mentorship, and learning resources.',
     category: 'Children\'s Education',
@@ -487,7 +543,7 @@ const galleryImages = ref([
   },
   {
     id: 2,
-    src: '/images/gallery/community/1.jpeg',
+    src: '/images/gallery/community/1.webp',
     title: 'Together We Thrive',
     description: 'Hosting inclusive events that strengthen community ties and celebrate local culture.',
     category: 'Community Events',
@@ -497,7 +553,7 @@ const galleryImages = ref([
   },
   {
     id: 3,
-    src: '/images/gallery/elderly/1.jpeg',
+    src: '/images/gallery/elderly/1.webp',
     title: 'Elderly Health Screening',
     description: 'Free medical check-ups for senior citizens',
     category: 'Elderly Care',
@@ -508,7 +564,7 @@ const galleryImages = ref([
     //break
   {
     id: 4,
-    src: '/images/gallery/children/2.jpeg',
+    src: '/images/gallery/children/2.webp',
     title: 'Books & Beyond',
     description: 'Supporting literacy and creativity with book drives, tutoring, and after-school programs.',
     category: 'Children\'s Education',
@@ -518,7 +574,7 @@ const galleryImages = ref([
   },
   {
     id: 5,
-    src: '/images/gallery/community/2.jpeg',
+    src: '/images/gallery/community/2.webp',
     title: 'Mentorship Program',
     description: 'Volunteers guiding the next generation',
     category: 'Community Events',
@@ -528,7 +584,7 @@ const galleryImages = ref([
   },
   {
     id: 6,
-    src: '/images/gallery/elderly/2.jpeg',
+    src: '/images/gallery/elderly/2.webp',
     title: 'Wisdom & Wellness',
     description: 'Promoting active aging through wellness programs, storytelling, and social engagement.',
     category: 'Elderly Care',
@@ -539,7 +595,7 @@ const galleryImages = ref([
     //break
   {
     id: 7,
-    src: '/images/gallery/children/3.jpeg',
+    src: '/images/gallery/children/3.webp',
     title: 'Classroom to Community',
     description: 'Bridging the gap between school and life skills to help children thrive in every environment.',
     category: 'Children\'s Education',
@@ -549,7 +605,7 @@ const galleryImages = ref([
   },
   {
     id: 8,
-    src: '/images/gallery/community/3.jpeg',
+    src: '/images/gallery/community/3.webp',
     title: 'Unity in Action',
     description: 'Mobilizing volunteers and residents for cleanups, drives, and neighborhood improvements.',
     category: 'Community Events',
@@ -559,7 +615,7 @@ const galleryImages = ref([
   },
   {
     id: 9,
-    src: '/images/gallery/elderly/3.jpeg',
+    src: '/images/gallery/elderly/3.webp',
     title: 'Golden Years',
     description: 'Providing companionship, healthcare support, and dignity for our senior citizens.',
     category: 'Elderly Care',
@@ -570,7 +626,7 @@ const galleryImages = ref([
   //Break
   {
     id: 10,
-    src: '/images/gallery/children/4.jpeg',
+    src: '/images/gallery/children/4.webp',
     title: 'Seeds of Success',
     description: 'Nurturing young minds with early childhood programs that build confidence, curiosity, and lifelong learning habits.',
     category: 'Children\'s Education',
@@ -580,7 +636,7 @@ const galleryImages = ref([
   },
   {
     id: 11,
-    src: '/images/gallery/community/4.jpeg',
+    src: '/images/gallery/community/4.webp',
     title: 'Voices of the Village',
     description: 'Giving a platform to community members through forums, performances, and storytelling.',
     category: 'Community Events',
@@ -590,7 +646,7 @@ const galleryImages = ref([
   },
   {
     id: 12,
-    src: '/images/gallery/elderly/4.jpeg',
+    src: '/images/gallery/elderly/4.webp',
     title: 'Senior Smiles',
     description: 'Creating joyful moments through community visits, celebrations, and intergenerational bonding.',
     category: 'Elderly Care',
@@ -604,6 +660,9 @@ const galleryImages = ref([
 
 
 
+// Small thumbnail used in the grid; the full-size file is only loaded in the lightbox
+const thumbOf = (src) => src.replace('/images/gallery/', '/images/gallery/thumbs/');
+
 const filteredImages = computed(() => {
   if (activeFilter.value === 'all') {
     return galleryImages.value;
@@ -613,6 +672,15 @@ const filteredImages = computed(() => {
 
 const currentImage = computed(() => {
   return filteredImages.value[currentImageIndex.value];
+});
+
+// Preload the next/previous photo while the lightbox is open so arrows feel instant
+watch([showLightbox, currentImageIndex], ([open, i]) => {
+  if (!open) return;
+  [i - 1, i + 1].forEach((n) => {
+    const img = filteredImages.value[n];
+    if (img) new Image().src = img.src;
+  });
 });
 
 const openLightbox = (index) => {
@@ -856,7 +924,6 @@ if (typeof window !== 'undefined') {
   height: 100%;
   object-fit: cover;
   transition: transform 0.6s ease;
-  will-change: transform;
 }
 
 .gallery-card:hover .gallery-image {
@@ -1125,12 +1192,4 @@ if (typeof window !== 'undefined') {
   }
 }
 
-/* GPU Acceleration */
-.gallery-card,
-.gallery-image,
-.filter-btn,
-.lightbox-image {
-  will-change: transform;
-  transform: translateZ(0);
-}
 </style>
