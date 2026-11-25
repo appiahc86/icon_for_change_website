@@ -369,7 +369,7 @@
         <div class="row justify-content-center align-items-center g-5 animate-on-scroll" data-animation="zoom-in">
           <div class="col-md-5 col-lg-4 text-center">
             <div class="director-photo-wrapper">
-              <img src="/images/team/emmanuel-essien.jpeg"
+              <img src="/images/team/essien.jpeg"
                    alt="Mr Emmanuel Essien, Director"
                    class="director-photo">
             </div>
